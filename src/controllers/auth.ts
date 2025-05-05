@@ -5,9 +5,9 @@ import type { ContextVariables } from "../constants";
 import type { DBCreateUser, DBUser } from "../models/db";
 import type { IDatabaseResource } from "../storage/types";
 
-export const AUTH_PREFIX = "/auth";
-export const LOGIN_ROUTE = "/login";
-export const REGISTER_ROUTE = "/register";
+export const AUTH_PREFIX = "/auth/";
+export const LOGIN_ROUTE = "login/";
+export const REGISTER_ROUTE = "register";
 
 export const authApp = new Hono<ContextVariables>()
 
