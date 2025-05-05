@@ -1,6 +1,15 @@
 import type {DBEntity} from "../models/db";
 import type {IDatabaseResource} from "./types";
 
+    /**
+     * A simple in-memory resource that stores data in an array.
+     *
+     * Useful for testing, or for simple applications that don't require
+     * persistence.
+     *
+     * @template T - The type of the resource.
+     * @template S - The type of the data used to create the resource.
+     */
 export class SimpleInMemoryResource<T extends S & DBEntity, S> implements IDatabaseResource<T, S>{
     data: Array<T> = [];
 
