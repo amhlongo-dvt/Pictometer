@@ -29,7 +29,10 @@ export interface DBMessage extends DBEntity {
 
 export interface DBImage extends DBEntity{
     ownerId: DBUser['id'];
-    imageUrl: string
+    filename: string;
+    contentType: string;
+    size: number;
+    s3key: string;
 }
 
 export type DBCreateUser = Pick<DBUser, 'name' | 'email' | 'password'>;
@@ -38,4 +41,4 @@ export type DBCreateChat = Pick<DBChat, 'ownerId' | 'name'>;
 
 export type DBCreateMessage = Pick<DBMessage, 'chatId' | 'type' | 'message'>;
 
-export type DBCreateImage = Pick<DBImage, 'ownerId' | 'imageUrl'>
+export type DBCreateImage = Pick<DBImage, 'ownerId'  | 'contentType' | 'filename' | 's3key' | 'size'>
