@@ -4,7 +4,8 @@
     "dev": "bun run --hot src/index.ts"
   },
   "dependencies": {
-    "hono": "^4.7.8"
+    "hono": "^4.7.8",
+    "uuid": "^11.1.0"
   },
   "devDependencies": {
     "@hono/eslint-config": "^2.0.0",
