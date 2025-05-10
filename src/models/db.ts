@@ -27,10 +27,15 @@ export interface DBMessage extends DBEntity {
     message: string;
 }
 
+export interface DBImage extends DBEntity{
+    ownerId: DBUser['id'];
+    imageUrl: string
+}
+
 export type DBCreateUser = Pick<DBUser, 'name' | 'email' | 'password'>;
 
 export type DBCreateChat = Pick<DBChat, 'ownerId' | 'name'>;
 
 export type DBCreateMessage = Pick<DBMessage, 'chatId' | 'type' | 'message'>;
 
-
+export type DBCreateImage = Pick<DBImage, 'ownerId' | 'imageUrl'>
