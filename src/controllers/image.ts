@@ -94,5 +94,12 @@ export function createImageApp(
 
     })
 
+    imageApp.get(IMAGE_ROUTE, async (c) => {
+        const userId = c.get("userId");
+        const images = await imageResource.findAll({ownerId: userId})
+        return c.json({images})
+    })
+
+
     return imageApp;
 }
