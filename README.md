@@ -21,7 +21,7 @@ curl -X POST http://localhost:3000/api/v1/auth/login/ -H "Content-Type: applicat
 ```
 To set token:
 ```sh
-set JWT_TOKEN=your_actual_jwt_token_here  
+set JWT_TOKEN=your_actual_jwt_token_here 
 ```
 
 To upload images:
@@ -34,6 +34,10 @@ To get all uploaded images:
 curl -X GET http://localhost:3000/api/v1/images/ -H "Authorization: Bearer %JWT_TOKEN%"   
 ```
 
+To edit image:
+```sh
+curl -X POST http://localhost:3000/api/v1/images/YOUR_IMAGE_ID/edit -H "Content-Type: application/json" -H "Authorization: Bearer %JWT_TOKEN%" -d "{\"transformations\":{\"resize\":{\"width\":800,\"height\":600},\"crop\":{\"width\":500,\"height\":300,\"x\":100,\"y\":50},\"rotate\":90,\"format\":\"webp\",\"filters\":{\"grayscale\":true,\"sepia\":false}}}"
+```
 
 
 
