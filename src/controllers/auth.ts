@@ -53,7 +53,7 @@ export function createAuthApp(
         if (!fulluser || 
             !await Bun.password.verify(password, fulluser.password)
         ){
-            return c.json({error: ERROR_INVALID_CREDENTIALS}, 400)
+            return c.json({error: ERROR_INVALID_CREDENTIALS}, 401)
         }
 
         const {JWT_SECRET} = env<{JWT_SECRET: string}, typeof c>(c);
