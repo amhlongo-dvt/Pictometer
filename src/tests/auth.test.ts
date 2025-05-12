@@ -1,6 +1,6 @@
 import { beforeEach, describe, expect, test } from "bun:test";
 import { createInMemoryApp } from "../controllers/main";
-import { password } from "bun";
+
 
 describe("auth tests", () => {
     let app = createInMemoryApp()
