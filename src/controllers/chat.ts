@@ -37,26 +37,33 @@ export function createChatApp(
         const userId = c.get("userId");
         const {name} = c.req.valid("json")
         const chat = await chatResource.create({name, ownerId: userId})
+        c.get("cache").clearPath(c.req.path);
         return c.json({chat})
     })
 
     chatApp.get(CHAT_ROUTE, async (c) => {
         const userId = c.get("userId");
-        const chats = await chatResource.findAll({ownerId: userId})
-        return c.json({chats})
+        const data = await chatResource.findAll({ownerId: userId})
+        const res = {data} 
+        c.get("cache").cache(res);
+        return c.json(res)
     })
     
     chatApp.get(CHAT_DETAIL_ROUTE, zValidator("param", idSchema), async (c) => {
         const {id} = c.req.valid("param")
         const userId = c.get("userId");
         const data = await chatResource.find({id, ownerId: userId})
-        return c.json({data})
+        const res = {data}
+        c.get("cache").cache(res);
+        return c.json(res)
     })
 
     chatApp.get(CHAT_MESSAGE_ROUTE, zValidator("param", idSchema), async (c) => {
         const {id: chatId} = c.req.valid("param")
         const chats = await messageResource.findAll({chatId})
-        return c.json({chats})
+        const res = {chats}
+        c.get("cache").cache(res);
+        return c.json(res)
     })
 
     chatApp.post(CHAT_MESSAGE_ROUTE, zValidator("param", idSchema), zValidator("json", messageSchema), async (c) => {
@@ -75,6 +82,7 @@ export function createChatApp(
 
         const data = await messageResource.create(responseMessage);
 
+        c.get("cache").clearPath(c.req.path);
         return c.json({data});
     });
 

@@ -22,6 +22,7 @@ import { AUTH_PREFIX, createAuthApp } from "./auth";
 import { CHAT_PREFIX, createChatApp } from "./chat";
 import { createImageApp, IMAGE_PREFIX } from "./image";
 import { rateLimitMiddleware } from "../middlewares/rateLimiting";
+import { cacheMiddleware } from "../middlewares/cacheMiddleware";
 
 const corsOptions = {
     origin: [Bun.env.CORS_ORIGIN as string],
@@ -42,6 +43,7 @@ export function createMainApp(
     app.use("*", checkJWTAuth)
     app.use("*", attachUserId)
     app.use("*", rateLimitMiddleware)
+    app.use("*", cacheMiddleware())
 
     app.route(AUTH_PREFIX, authApp);
     app.route(CHAT_PREFIX, chatApp);
