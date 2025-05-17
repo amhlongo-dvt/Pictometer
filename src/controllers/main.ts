@@ -2,6 +2,7 @@ import { Hono } from "hono";
 import{showRoutes} from "hono/dev";
 import { logger } from "hono/logger";
 import { timing } from "hono/timing";
+import { cors} from "hono/cors"
 import type { ContextVariables } from "../constants";
 import { API_PREFIX } from "../constants";
 import { attachUserId, checkJWTAuth } from "../middlewares/auth";
@@ -21,6 +22,13 @@ import { AUTH_PREFIX, createAuthApp } from "./auth";
 import { CHAT_PREFIX, createChatApp } from "./chat";
 import { createImageApp, IMAGE_PREFIX } from "./image";
 
+const corsOptions = {
+    origin: [Bun.env.CORS_ORIGIN as string],
+    allowMethods: ["GET", "POST", "PUT", "PATCH", "DELETE"],
+    allowHeaders: ["Content-Type", "Authorization"],
+    maxAge: 86400
+}
+
 export function createMainApp(
     authApp: Hono<ContextVariables>,
     chatApp: Hono<ContextVariables>,
@@ -31,7 +39,8 @@ export function createMainApp(
     app.use("*", logger())
     app.use("*", checkJWTAuth)
     app.use("*", attachUserId)
-
+    app.use("*", cors(corsOptions))
+    
     app.route(AUTH_PREFIX, authApp);
     app.route(CHAT_PREFIX, chatApp);
     app.route(IMAGE_PREFIX, imageApp);
