@@ -90,8 +90,8 @@ export class ChatSQLResource implements IDatabaseResource<DBChat, DBCreateChat> 
     }
     
     async create(data: DBCreateChat): Promise<DBChat> {
-        const query = 'INSERT INTO "chat" (ownerId, name) VALUES ($1, $2) RETURNING *';
-        const values = [data.ownerId, data.name];
+        const query = 'INSERT INTO chat (name, "ownerId") VALUES ($1, $2) RETURNING *';
+        const values = [data.name, data.ownerId];
         const result = await this.pool.query(query, values);
         return result.rows[0] as DBChat;
     }
@@ -165,7 +165,7 @@ export class MessageSQLResorce implements IDatabaseResource<DBMessage, DBCreateM
     }
     
     async create(data: DBCreateMessage): Promise<DBMessage> {
-        const query = 'INSERT INTO "message" (chatId, type, message) VALUES ($1, $2, $3) RETURNING *';
+        const query = 'INSERT INTO "message" ("chatId", type, message) VALUES ($1, $2, $3) RETURNING *';
         const values = [data.chatId, data.type, data.message];
         const result = await this.pool.query(query, values);
         return result.rows[0] as DBMessage;

@@ -1,15 +1,14 @@
 version: '3.8'
 services:
-    postgres:
-        image: postgres:lastest
-        restart: always
-        container_name: postgres
-        environment:
-            POSTGRES_USER: db
-            POSTGRES_PASSWORD: user
-            POSTGRES_DB: pass
-        ports:
-            - "5432:5432"
-        volumes:
-            - data/postgres:/var/lib/postgresql/data
-  
+  postgres:
+    image: postgres:latest
+    restart: always
+    environment:
+      POSTGRES_DB: db
+      POSTGRES_USER: user
+      POSTGRES_PASSWORD: pass
+    ports:
+      - "5433:5432"
+    volumes:
+      - /c/Users/A/Downloads/Pictometer/data/postgres:/var/lib/postgresql/data
+      - /c/Users/A/Downloads/Pictometer/data/init_scripts:/docker-entrypoint-initdb.d

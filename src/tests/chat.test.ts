@@ -69,7 +69,7 @@ describe("chat tests", () => {
 
         expect(res.status).toBe(200)
         const response = await res.json()
-        const data = response.chats
+        const data = response.data
         expect(Array.isArray(data)).toBeTruthy()
         expect(data.length).toBe(1)
         expect(data[0].id).toBe(chatId)
@@ -90,7 +90,9 @@ describe("chat tests", () => {
 
         expect(res.status).toBe(200)
         const response = await res.json()
-        const data = response.chats
+        console.log(response);
+        
+        const data = response.data
 
         expect(Array.isArray(data)).toBeTruthy()
         expect(data.length).toBe(1)
@@ -105,7 +107,7 @@ describe("chat tests", () => {
 
         expect(response2.status).toBe(200)
         const response2Data = await response2.json()
-        const data2 = response2Data.chats
+        const data2 = response2Data.data
         expect(Array.isArray(data2)).toBeTruthy()
         expect(data2.length).toBe(1)
         expect(data2[0].id).toBe(chatId2)

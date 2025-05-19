@@ -23,6 +23,8 @@ import { CHAT_PREFIX, createChatApp } from "./chat";
 import { createImageApp, IMAGE_PREFIX } from "./image";
 import { rateLimitMiddleware } from "../middlewares/rateLimiting";
 import { cacheMiddleware } from "../middlewares/cacheMiddleware";
+import { Pool } from "pg";
+import { UserSQLResource, ChatSQLResource, MessageSQLResorce, ImageSQLResource } from "../storage/sql";
 
 const corsOptions = {
     origin: [Bun.env.CORS_ORIGIN as string],
@@ -49,7 +51,7 @@ export function createMainApp(
     app.route(CHAT_PREFIX, chatApp);
     app.route(IMAGE_PREFIX, imageApp);
 
-    showRoutes(app)
+    // showRoutes(app)
 
     return app;
 }
@@ -59,6 +61,22 @@ export function createInMemoryApp(){
     const chatResource = new SimpleInMemoryResource<DBChat, DBCreateChat>();
     const messageResource = new SimpleInMemoryResource<DBMessage, DBCreateMessage>();
     const imageResource = new SimpleInMemoryResource<DBImage, DBCreateImage>();
+    const authApp = createAuthApp(userResource);
+    const chatApp = createChatApp(chatResource, messageResource);
+    const imageApp = createImageApp(imageResource)
+    return createMainApp(authApp, chatApp, imageApp);
+}
+
+export function createSQLApp(){
+    const pool = new Pool({
+        connectionString: Bun.env.DATABASE_URL,
+    })
+    console.log(pool);
+    
+    const userResource = new UserSQLResource(pool);
+    const chatResource = new ChatSQLResource(pool);
+    const messageResource = new MessageSQLResorce(pool);
+    const imageResource = new ImageSQLResource(pool);
     const authApp = createAuthApp(userResource);
     const chatApp = createChatApp(chatResource, messageResource);
     const imageApp = createImageApp(imageResource)
