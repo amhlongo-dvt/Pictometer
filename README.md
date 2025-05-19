@@ -5,7 +5,12 @@ bun install
 
 To run:
 ```sh
-bun run dev
+bun run dev --env-file .env.dev
+```
+
+To run tests:
+```sh
+bun test --env-file .env.test
 ```
 
 open http://localhost:3000
