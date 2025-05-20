@@ -117,3 +117,56 @@ export class ChatDBResource implements IDatabaseResource<DBChat, DBCreateChat> {
     }
 }
 
+export class MessageDBResource implements IDatabaseResource<DBMessage, DBCreateMessage>{
+    prisma: PrismaClient;
+
+    constructor(prisma: PrismaClient) {
+        this.prisma = prisma;
+    }
+
+    async create(data: DBCreateMessage): Promise<DBMessage> {
+        const message = await this.prisma.message.create({
+            data: {...data}
+        })
+        return message as DBMessage;
+    }    
+
+    async delete(id: string): Promise<DBMessage | null> {
+        const message = await this.prisma.message.delete({
+            where: {id: id}
+        })
+
+        return message as DBMessage | null
+    }
+
+    async get(id: string): Promise<DBMessage | null> {
+        const message = await this.prisma.message.findFirst({
+            where: {id: id}
+        })
+        return message as DBMessage | null;
+    }
+
+    async find(data: Partial<DBMessage>): Promise<DBMessage | null> {
+        const message = await this.prisma.message.findFirst({
+            where: {...data}
+        })
+        return message as DBMessage | null;
+    }
+
+    async findAll(data: Partial<DBMessage>): Promise<DBMessage[]> {
+        const messages = await this.prisma.message.findMany({
+            where: {...data}
+        })
+        return messages as DBMessage[];
+    }
+
+    async update(id: string, data: Partial<DBMessage>): Promise<DBMessage | null>{
+        const message = await this.prisma.message.update({
+            where: {
+                id,
+            },
+            data
+        })
+        return message as DBMessage | null;
+    }
+}
