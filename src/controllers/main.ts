@@ -25,6 +25,8 @@ import { rateLimitMiddleware } from "../middlewares/rateLimiting";
 import { cacheMiddleware } from "../middlewares/cacheMiddleware";
 import { Pool } from "pg";
 import { UserSQLResource, ChatSQLResource, MessageSQLResorce, ImageSQLResource } from "../storage/sql";
+import { ChatDBResource, ImageDBResource, MessageDBResource, UserDBResource } from "../storage/orm";
+import { PrismaClient } from "@prisma/client";
 
 const corsOptions = {
     origin: [Bun.env.CORS_ORIGIN as string],
@@ -51,7 +53,7 @@ export function createMainApp(
     app.route(CHAT_PREFIX, chatApp);
     app.route(IMAGE_PREFIX, imageApp);
 
-    // showRoutes(app)
+    showRoutes(app)
 
     return app;
 }
@@ -77,6 +79,19 @@ export function createSQLApp(){
     const chatResource = new ChatSQLResource(pool);
     const messageResource = new MessageSQLResorce(pool);
     const imageResource = new ImageSQLResource(pool);
+    const authApp = createAuthApp(userResource);
+    const chatApp = createChatApp(chatResource, messageResource);
+    const imageApp = createImageApp(imageResource)
+    return createMainApp(authApp, chatApp, imageApp);
+}
+
+export function createORMApp(){
+    const prisma = new PrismaClient();
+    prisma.$connect();
+    const userResource = new UserDBResource(prisma);
+    const chatResource = new ChatDBResource(prisma);
+    const messageResource = new MessageDBResource(prisma);
+    const imageResource = new ImageDBResource(prisma);
     const authApp = createAuthApp(userResource);
     const chatApp = createChatApp(chatResource, messageResource);
     const imageApp = createImageApp(imageResource)

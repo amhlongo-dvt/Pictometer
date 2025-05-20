@@ -1,10 +1,13 @@
-import type {PrismaClient} from "@prisma/client";
+
+import { PrismaClient } from "@prisma/client";
 
 import type {
     DBChat,
     DBCreateChat,
+    DBCreateImage,
     DBCreateMessage,
     DBCreateUser,
+    DBImage,
     DBMessage,
     DBUser,
 } from "../models/db";
@@ -168,5 +171,59 @@ export class MessageDBResource implements IDatabaseResource<DBMessage, DBCreateM
             data
         })
         return message as DBMessage | null;
+    }
+}
+
+export class ImageDBResource implements IDatabaseResource<DBImage, DBCreateImage>{
+    prisma: PrismaClient;
+
+    constructor(prisma: PrismaClient) {
+        this.prisma = prisma;
+    }
+
+    async create(data: DBCreateImage): Promise<DBImage> {
+        const image = await this.prisma.image.create({
+            data: {...data}
+        })
+        return image as DBImage;
+    }    
+
+    async delete(id: string): Promise<DBImage | null> {
+        const image = await this.prisma.image.delete({
+            where: {id: id}
+        })
+
+        return image as DBImage | null
+    }
+
+    async get(id: string): Promise<DBImage | null> {
+        const image = await this.prisma.image.findFirst({
+            where: {id: id}
+        })
+        return image as DBImage | null;
+    }
+
+    async find(data: Partial<DBImage>): Promise<DBImage | null> {
+        const image = await this.prisma.image.findFirst({
+            where: {...data}
+        })
+        return image as DBImage | null;
+    }
+
+    async findAll(data: Partial<DBImage>): Promise<DBImage[]> {
+        const images = await this.prisma.image.findMany({
+            where: {...data}
+        })
+        return images as DBImage[];
+    }
+
+    async update(id: string, data: Partial<DBImage>): Promise<DBImage | null>{
+        const image = await this.prisma.image.update({
+            where: {
+                id,
+            },
+            data
+        })
+        return image as DBImage | null;
     }
 }

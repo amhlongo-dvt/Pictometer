@@ -15,6 +15,7 @@ model User {
     email String @unique @db.VarChar(200)
     password String @db.VarChar(500)
     chats Chat[]
+    images Image[]
 }
 
 model Chat {
@@ -35,4 +36,16 @@ model Message {
     type String @db.VarChar(100)
     message String @db.Text
     chat Chat @relation(fields: [chatId], references: [id])
+}
+
+model Image {
+    id        String @id @default(uuid())
+    createdAt DateTime @default(now())
+    updatedAt DateTime @updatedAt
+    ownerId    String
+    filename  String @db.VarChar(500)
+    contentType  String @db.VarChar(100)
+    size      Int
+    s3key     String @db.VarChar(1000)
+    user      User @relation(fields: [ownerId], references: [id])
 }
