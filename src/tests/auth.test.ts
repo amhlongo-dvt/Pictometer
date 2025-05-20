@@ -1,18 +1,17 @@
 import { beforeEach, describe, expect, test } from "bun:test";
-import { createInMemoryApp, createSQLApp } from "../controllers/main";
+import { createInMemoryApp, createSQLApp, createORMApp } from "../controllers/main";
 import { Pool } from "pg";
-import { resetSQLDB } from "./utils";
+import { resetSQLDB, resetORMDB } from "./utils";
+import { PrismaClient } from "@prisma/client";
 
 
 describe("auth tests", () => {
-    const app = createSQLApp()
+    const app = createORMApp()
     
-    const pool = new Pool({
-        connectionString: Bun.env.DATABASE_URL,
-    })
+    const prisma = new PrismaClient()
 
     beforeEach( async () => {
-        await resetSQLDB(pool)
+        await resetORMDB(prisma)
     })
 
     test("POST /register - normal case", async () => {
