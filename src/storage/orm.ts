@@ -64,5 +64,56 @@ export class UserDBResource implements IDatabaseResource<DBUser, DBCreateUser> {
     }
 }
 
+export class ChatDBResource implements IDatabaseResource<DBChat, DBCreateChat> {
+    prisma: PrismaClient;
+    
+    constructor(prisma: PrismaClient) {
+        this.prisma = prisma;
+    }
 
+    async create(data: DBCreateChat): Promise<DBChat> {
+        const chat = await this.prisma.chat.create({
+            data: {...data}
+        })
+        return chat as DBChat;
+    }
+
+    async delete(id: string): Promise<DBChat | null> {
+        const chat =  await this.prisma.chat.delete({
+            where: {id: id}
+        })
+        return chat as DBChat;
+    }
+
+    async get(id: string): Promise<DBChat | null> {
+        const chat = await this.prisma.chat.findFirst({
+            where: {id: id}
+        })
+        return chat as DBChat | null;
+    }
+
+    async find(data: Partial<DBChat>): Promise<DBChat | null> {
+        const chat = await this.prisma.chat.findFirst({
+            where: {...data}
+        })
+        return chat as DBChat | null;
+    }
+
+    async findAll(data: Partial<DBChat>): Promise<DBChat[]> {
+        const chats = await this.prisma.chat.findMany({
+            where: {...data}
+        })
+        return chats as DBChat[];
+    }
+
+    async update(id: string, data: Partial<DBChat>): Promise<DBChat | null>{
+        const chat = await this.prisma.chat.update({
+            where: {
+                id,
+            },
+            data
+        })
+        return chat as DBChat | null;
+    }
+}
 
