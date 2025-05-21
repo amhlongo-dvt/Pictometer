@@ -55,7 +55,6 @@ describe("chat tests", () => {
         });
 
         const response = await createChatRes.json()
-        console.log(response);
         
         const chatId =  response.chat.id
         return chatId
@@ -95,7 +94,6 @@ describe("chat tests", () => {
 
         expect(res.status).toBe(200)
         const response = await res.json()
-        console.log(response);
         
         const data = response.data
 

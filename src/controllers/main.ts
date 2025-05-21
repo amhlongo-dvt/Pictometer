@@ -73,7 +73,6 @@ export function createSQLApp(){
     const pool = new Pool({
         connectionString: Bun.env.DATABASE_URL,
     })
-    console.log(pool);
     
     const userResource = new UserSQLResource(pool);
     const chatResource = new ChatSQLResource(pool);

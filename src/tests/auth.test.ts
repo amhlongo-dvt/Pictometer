@@ -29,7 +29,6 @@ describe("auth tests", () => {
             body: JSON.stringify(jsonBody),
         });
 
-        console.log(response);
         
 
         expect(response.status).toBe(200)
@@ -125,7 +124,7 @@ describe("auth tests", () => {
             body: JSON.stringify(jsonBody),
         });
 
-        console.log(registerRes);
+        (registerRes);
         
 
         const loginRes = await app.request("api/v1/auth/login/", {
