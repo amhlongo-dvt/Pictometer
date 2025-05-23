@@ -44,8 +44,8 @@ export function createMainApp(
     app.use("*", cors(corsOptions))
     app.use("*", timing())
     app.use("*", logger())
-    app.use("*", checkJWTAuth)
-    app.use("*", attachUserId)
+    // app.use("*", checkJWTAuth)
+    // app.use("*", attachUserId)
     app.use("*", rateLimitMiddleware)
     app.use("*", cacheMiddleware())
 

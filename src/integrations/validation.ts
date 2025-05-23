@@ -13,6 +13,7 @@ const GPTResponseSchema = z.object({
 export async function validateGPTResponse(response:Response):
 Promise<string> {
     const responseData = await response.json();
+    
     try {
         const parsed = GPTResponseSchema.parse(responseData);
         const content = parsed.choices[0].message.content.trim();

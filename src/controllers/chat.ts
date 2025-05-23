@@ -9,6 +9,7 @@ import type {
 import type { IDatabaseResource } from "../storage/types";
 import { z } from "zod";
 import { zValidator } from "@hono/zod-validator";
+import { generateMessageResponse } from "../integrations/generate_message";
 
 const idSchema = z.object({
     id: z.string().min(1),
@@ -69,13 +70,12 @@ export function createChatApp(
     chatApp.post(CHAT_MESSAGE_ROUTE, zValidator("param", idSchema), zValidator("json", messageSchema), async (c) => {
         const {id: chatId} = c.req.valid("param")
         const {message} = c.req.valid("json")
-
         const userMessage: DBCreateMessage = {message, chatId, type:"user"}
-
         await messageResource.create(userMessage);
-
+        const allMessages = await messageResource.findAll({chatId});
+        const response = await generateMessageResponse(allMessages);
         const responseMessage: DBCreateMessage = {
-            message: "dummy response",
+            message: response,
             chatId,
             type: "system",
         };
