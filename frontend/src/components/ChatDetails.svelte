@@ -16,8 +16,8 @@
     })
     async function loadMessages() {
         try {
-            const response = await axios.get(`${API_HOST}/api/v1/chat/${chatId}/messages/`);
-            messages = response.data;
+            const response = await axios.get(`${API_HOST}/api/v1/chat/${chatId}/message/`);
+            messages = response.data.chats;
         } catch (error) {
             errorMessage = "Failed to get chat details. Please try again later";
             console.error('Error fetching messages', error)
@@ -27,11 +27,12 @@
     async function sendMessage() {
         isLoading = true;
         try {
-            await axios.post(`${API_HOST}/api/v1/chat/${chatId}/messages/`, {
+            await axios.post(`${API_HOST}/api/v1/chat/${chatId}/message/`, {
                 message: newMessage,
             });
             messages = [...messages, {message: newMessage, createdAt: Date.now()}];
             newMessage = "";
+            await loadMessages()
         } catch (error) {
             errorMessage = "Failed to send message. Please try again later";
             console.error('Error sending message', error)
@@ -59,13 +60,8 @@
             </li>
         {/each}
     </ul>
-    <textarea 
-        bind:value={newMessage} 
-        placeholder="Type a message">
-    </textarea>
-    <button 
-        on:click={sendMessage} 
-        disabled={isLoading}>
+    <textarea bind:value={newMessage} placeholder="Type a message"></textarea>
+    <button on:click={sendMessage} disabled={isLoading}>
         {#if isLoading}
             Sending...
         {:else}

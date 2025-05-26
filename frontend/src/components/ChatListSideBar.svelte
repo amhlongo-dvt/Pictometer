@@ -14,7 +14,7 @@
     async function getdata(){
         try {
             const response = await axios.get(`${API_HOST}/api/v1/chat/`);
-            chats = response.data;
+            chats = response.data.data;
         } catch (error) {
             console.error('Error fetching chats', error)
             errorMessage = "Failed to fetch chats. Please try again later";

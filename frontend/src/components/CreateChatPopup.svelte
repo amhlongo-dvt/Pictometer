@@ -15,7 +15,7 @@
             const response = await axios.post(`${API_HOST}/api/v1/chat/`, {
                 name: chatName,
             });
-            onCreate(response.data.id);
+            onCreate(response.data.chat.id);
         } catch (error) {
             console.error('Error creating chat', error)
             errorMessage = "Failed to created chat. Please try again later";
