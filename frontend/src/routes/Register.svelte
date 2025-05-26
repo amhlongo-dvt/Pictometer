@@ -5,11 +5,12 @@
     import {authToken} from "../stores/auth"
     import {API_HOST} from "../constants"
 
+    let name = "";
     let email = "";
     let password = "";
     let errorMessage = "";
 
-    $: formValid = email.length > 0 && password.length > 0;
+    $: formValid = name.length > 0 && email.length > 0 && password.length > 0;
 
     onMount(() => {
         if ($authToken) {
@@ -17,21 +18,21 @@
         }
     });
 
-    async function login() {
+    async function register() {
         try {
-            const response = await axios.post(`${API_HOST}/api/v1/auth/login/`, {
+            const response = await axios.post(`${API_HOST}/api/v1/auth/register/`, {
                 email,
                 password,
+                name
             });
-            authToken.set(response.data?.token);
-            navigate("/")
+            navigate("/login")
         } catch (error) {
             const defaultError = "An unexpected error occurred"
             if (axios.isAxiosError(error) && error.response){
                 const errorSlug = error?.response?.data?.error
                 switch (errorSlug) {
-                    case "INVALID_CREDENTIALS":
-                        errorMessage = "Invalid email or password"
+                    case "ERROR_USER_ALREADY_EXISTS":
+                        errorMessage = "User already exists, try logging in"
                         break;
                     default:
                         errorMessage = defaultError
@@ -43,15 +44,25 @@
         }
     }
 </script>
-
+    
 <div class="auth-container">
-    <form on:submit|preventDefault={login} class="auth-form">
+    <form on:submit|preventDefault={register} class="auth-form">
         <div class="form-header">
-            <h2>Login</h2>
+            <h2>Register</h2>
         </div>
         {#if errorMessage}
             <p class="error">{errorMessage}</p>
         {/if}
+
+        <div class="input-group">
+            <input 
+                type="text" 
+                bind:value={name} 
+                placeholder="Name" 
+                required 
+            />
+        </div>
+        
         <div class="input-group">
             <input 
                 type="email" 
@@ -76,14 +87,14 @@
                 type="submit" 
                 disabled={!formValid}
             >
-                Login
+                Register
             </button>
         </div>
 
         <div class="switch-auth">
-            Don't have an account?
-            <a href="/register">Register here</a>
+            Already have an account?
+            <a href="/login">Login here</a>
         </div>
+        
     </form>
 </div>
-
