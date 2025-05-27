@@ -1,7 +1,7 @@
 <script lang="ts">
     import {onMount} from "svelte"
     import axios from "axios";
-    
+    import "../styles/chatList.css"
     import {navigate} from "svelte-routing"
     import CreateChatPopup from "./CreateChatPopup.svelte";
     import {API_HOST} from "../constants"
@@ -66,18 +66,18 @@
         </div>
     {/if}
 
-    <div class="chat-list">
+    <ul class="chat-list">
         {#each chats as chat (chat.id)}
             <!-- svelte-ignore a11y_click_events_have_key_events -->
             <!-- svelte-ignore a11y_no_static_element_interactions -->
-            <div 
-                class="class-list-item" 
+            <li 
+                class="chat-list-item" 
                 class:selected={chat.id === chatId}
                 on:click={() => selectChat(chat.id)}
             >
                 {chat.name}
-            </div>
+            </li>
         {/each}
-    </div>    
+    </ul>    
     <button on:click={createNewChat}>New Chat</button>
 </div>
