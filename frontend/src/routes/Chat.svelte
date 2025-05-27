@@ -2,6 +2,7 @@
     import {onMount} from "svelte"
     import {navigate} from "svelte-routing"
     import {authToken} from "../stores/auth"
+    import "../styles/chat.css"
     import ChatListSideBar from "../components/ChatListSideBar.svelte";
     import ChatDetails from "../components/ChatDetails.svelte";
     import Header from "../components/Header.svelte";
