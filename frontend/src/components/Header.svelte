@@ -1,5 +1,6 @@
 <script lang="ts">
     import {navigate} from "svelte-routing"
+    import "../styles/header.css"
     import {authToken} from '../stores/auth'
     const name = authToken.getPayload()?.name || "User"
     
