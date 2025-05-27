@@ -1,6 +1,8 @@
 <script lang="ts">
     import axios from "axios";
     import {API_HOST} from "../constants"
+    import "../styles/chatPopup.css"
+    
     
     export let onCreate: (newChatId: string) => void
     export let onClose: () => void
