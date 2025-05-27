@@ -2,6 +2,7 @@
     import {onMount} from "svelte"
     import {navigate} from "svelte-routing"
     import axios from "axios";
+    import "../styles/auth.css"
     import {authToken} from "../stores/auth"
     import {API_HOST} from "../constants"
 
@@ -81,7 +82,7 @@
         </div>
 
         <div class="switch-auth">
-            Don't have an account?
+            <span>Don't have an account?</span>
             <a href="/register">Register here</a>
         </div>
     </form>
