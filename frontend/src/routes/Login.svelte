@@ -5,6 +5,7 @@
     import "../styles/auth.css"
     import {authToken} from "../stores/auth"
     import {login} from "../services/authService"
+    import {Button} from "$lib/components/ui/button"
 
     let email = "";
     let password = "";
@@ -85,6 +86,7 @@
             <span>Don't have an account?</span>
             <a href="/register">Register here</a>
         </div>
+        <Button >Button</Button>
     </form>
 </div>
 
