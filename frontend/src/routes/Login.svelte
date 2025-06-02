@@ -9,14 +9,14 @@
     import { Card, CardContent, CardFooter } from "$lib/components/ui/card";
     import { Label } from "$lib/components/ui/label";
     import { Input } from "$lib/components/ui/input";
-  import CardDescription from "$lib/components/ui/card/card-description.svelte";
-  import CardTitle from "$lib/components/ui/card/card-title.svelte";
+    import CardDescription from "$lib/components/ui/card/card-description.svelte";
+    import CardTitle from "$lib/components/ui/card/card-title.svelte";
+    import WelcomePanel from "$lib/components/auth/WelcomePanel.svelte";
 
     let email = "";
     let password = "";
     let errorMessage = "";
 
-    // Added validation similar to commented code
     $: formValid = email.length > 0 && password.length > 0;
 
     onMount(() => {
@@ -57,44 +57,9 @@
     }
 </script>
 
-<div class="flex h-screen bg-blue-500">
-    <!-- show separation by using a border in between the two divs -->
-    
-  
-    <div class="flex-1 flex flex-col items-center justify-center text-center p-6">
-        <div class="max-w-md">
-            <p class="text-sm font-medium mb-2">Welcome to Pictometer</p>
-            <h1 class="text-3xl font-bold mb-6">Make your Imagination a reality</h1>
-            
-            <!-- Character illustration -->
-            <div class="flex justify-center mb-6">
-                <div class="relative">
-                    <div class="w-24 h-24 rounded-full bg-pink-200 flex items-center justify-center">
-                        <div class="flex flex-col items-center">
-                            <div class="flex space-x-4">
-                                <div class="w-1 h-1 rounded-full bg-black"></div>
-                                <div class="w-1 h-1 rounded-full bg-black"></div>
-                            </div>
-                            <div class="w-3 h-1 mt-1 rounded-full bg-black"></div>
-                        </div>
-                    </div>
-                    <div class="absolute bottom-0 right-0 transform translate-x-3 translate-y-1">
-                        <div class="relative">
-                            <div class="w-6 h-10 bg-white border border-gray-300 rounded-md"></div>
-                            <div class="absolute top-1 left-1 w-1 h-1 bg-yellow-300"></div>
-                            <div class="absolute top-1 right-1 w-1 h-1 bg-yellow-300"></div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            
-            <p class="text-sm">
-                With this application you can be a World-Class editor using the power of AI. You can upload and image or generate it. Then the fun begins when you get to play around with our AI-Powered photo editor
-            </p>
-        </div>
-    </div>
+<div class="flex h-screen bg-blue-500">  
+    <WelcomePanel />
     <div class="border-r border-2 border-black"></div>
-    <!-- Right side with login form -->
     <div class="flex-1 flex items-center justify-center p-6">
         <Card class="w-full max-w-md bg-white">
             <form on:submit|preventDefault={handleLogin} class="p-6">
@@ -108,7 +73,6 @@
                 {/if}
                 
                 <div class="space-y-4">
-                    <!-- Email field -->
                     <div class="space-y-2">
                         <Label for="email">Email</Label>
                         <Input
@@ -120,7 +84,6 @@
                         />
                     </div>
                     
-                    <!-- Password field -->
                     <div class="space-y-2">
                         <Label for="password">Password</Label>
                         <Input 

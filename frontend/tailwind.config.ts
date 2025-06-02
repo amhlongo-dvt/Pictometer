@@ -6,6 +6,9 @@ const config: Config = {
 	content: ["./src/**/*.{html,js,svelte,ts}"],
 	safelist: ["dark"],
 	theme: {
+		fontFamily: {
+			sans: ["Inter", ...fontFamily.sans],
+		},
 		extend: {
 		  colors: {
 			main: 'var(--main)',

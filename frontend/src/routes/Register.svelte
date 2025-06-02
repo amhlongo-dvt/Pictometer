@@ -5,6 +5,13 @@
     import "../styles/auth.css"
     import {authToken} from "../stores/auth"
     import {register} from "../services/authService"
+    import {Button} from "$lib/components/ui/button"
+    import { Card, CardContent, CardFooter } from "$lib/components/ui/card";
+    import { Label } from "$lib/components/ui/label";
+    import { Input } from "$lib/components/ui/input";
+    import CardDescription from "$lib/components/ui/card/card-description.svelte";
+    import CardTitle from "$lib/components/ui/card/card-title.svelte";
+    import WelcomePanel from "$lib/components/auth/WelcomePanel.svelte";
 
     let name = "";
     let email = "";
@@ -20,6 +27,11 @@
     });
 
     async function handleRegister() {
+        if (!formValid) {
+            errorMessage = "Please fill in all required fields";
+            return;
+        }
+        
         try {
             await register({
                 email,
@@ -46,56 +58,68 @@
     }
 </script>
     
-<div class="auth-container">
-    <form on:submit|preventDefault={handleRegister} class="auth-form">
-        <div class="form-header">
-            <h2>Register</h2>
-        </div>
-        {#if errorMessage}
-            <p class="error">{errorMessage}</p>
-        {/if}
-
-        <div class="input-group">
-            <input 
-                type="text" 
-                bind:value={name} 
-                placeholder="Name" 
-                required 
-            />
-        </div>
-        
-        <div class="input-group">
-            <input 
-                type="email" 
-                bind:value={email} 
-                placeholder="Email" 
-                required 
-            />
-        </div>
-
-        <div class="input-group">
-            <input 
-                type="password" 
-                bind:value={password} 
-                placeholder="Password"
-                required 
-            />
-        </div>
-
-        <div class="action-group">
-            <button
-                class="auth-btn"
-                type="submit" 
-                disabled={!formValid}
-            >
-                Register
-            </button>
-        </div>
-
-        <div class="switch-auth">
-            Already have an account?
-            <a href="/login">Login here</a>
-        </div>
-        
-    </form>
+<div class="flex h-screen bg-blue-500">  
+    <WelcomePanel />
+    <div class="border-r border-2 border-black"></div>
+    <div class="flex-1 flex items-center justify-center p-6">
+        <Card class="w-full max-w-md bg-white">
+            <form on:submit|preventDefault={handleRegister} class="p-6">
+                <CardTitle>Sign Up to your account</CardTitle>
+                <CardDescription class="text-gray-600 mb-6">Enter your details below to sign up to your account</CardDescription>
+                
+                {#if errorMessage}
+                    <div class="p-3 mb-4 bg-red-100 text-red-700 rounded-md">
+                        {errorMessage}
+                    </div>
+                {/if}
+                
+                <div class="space-y-4">
+                    <div class="space-y-2">
+                        <Label for="name">Name</Label>
+                        <Input
+                            id="name"
+                            type="text"
+                            placeholder="Name"
+                            bind:value={name}
+                            required
+                        />
+                    </div>
+                    
+                    <div class="space-y-2">
+                        <Label for="email">Email</Label>
+                        <Input
+                            id="email"
+                            type="email"
+                            placeholder="Email address"
+                            bind:value={email}
+                            required
+                        />
+                    </div>
+                    
+                    <div class="space-y-2">
+                        <Label for="password">Password</Label>
+                        <Input 
+                            id="password" 
+                            type="password" 
+                            placeholder="Password"
+                            bind:value={password} 
+                            required 
+                        />
+                    </div>
+                </div>
+                
+                <Button 
+                    type="submit" 
+                    class="w-full mt-6 bg-blue-500 hover:bg-blue-600"
+                    disabled={!formValid}
+                >
+                    Sign Up
+                </Button>
+                
+                <CardDescription class="mt-4 text-center text-sm">
+                    Already have an account? <a href="/login" class="text-blue-500 hover:underline">Log in</a>
+                </CardDescription>
+            </form>
+        </Card>
+    </div>
 </div>
