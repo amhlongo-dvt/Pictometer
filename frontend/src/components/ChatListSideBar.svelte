@@ -1,10 +1,9 @@
 <script lang="ts">
     import {onMount} from "svelte"
-    import axios from "axios";
     import "../styles/chatList.css"
     import {navigate} from "svelte-routing"
     import CreateChatPopup from "./CreateChatPopup.svelte";
-    import {API_HOST} from "../constants"
+    import { getChatList } from "../services/chatService"
     
     let chats: {id: string, name: string}[] = [];
     let errorMessage: string | null = null;
@@ -13,8 +12,8 @@
 
     async function getdata(){
         try {
-            const response = await axios.get(`${API_HOST}/api/v1/chat/`);
-            chats = response.data.data;
+            const response = await getChatList();
+            chats = response.data;
         } catch (error) {
             console.error('Error fetching chats', error)
             errorMessage = "Failed to fetch chats. Please try again later";
@@ -68,15 +67,13 @@
 
     <ul class="chat-list">
         {#each chats as chat (chat.id)}
-            <!-- svelte-ignore a11y_click_events_have_key_events -->
-            <!-- svelte-ignore a11y_no_static_element_interactions -->
-            <li 
+            <button 
                 class="chat-list-item" 
                 class:selected={chat.id === chatId}
                 on:click={() => selectChat(chat.id)}
             >
                 {chat.name}
-            </li>
+            </button>
         {/each}
     </ul>    
     <button on:click={createNewChat}>New Chat</button>

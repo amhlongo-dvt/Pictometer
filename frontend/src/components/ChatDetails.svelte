@@ -1,7 +1,8 @@
 <script lang="ts">
     import {onMount} from "svelte"
     import axios from "axios";
-    import {API_HOST} from "../constants"
+    import "../styles/chatDetails.css"
+    import { getChatMessages, sendMessage as sendChatMessage } from "../services/chatService"
     
     export let chatId: string;
 
@@ -16,8 +17,8 @@
     })
     async function loadMessages() {
         try {
-            const response = await axios.get(`${API_HOST}/api/v1/chat/${chatId}/message/`);
-            messages = response.data.chats;
+            const response = await getChatMessages(chatId);
+            messages = response.chats;
         } catch (error) {
             errorMessage = "Failed to get chat details. Please try again later";
             console.error('Error fetching messages', error)
@@ -27,9 +28,7 @@
     async function sendMessage() {
         isLoading = true;
         try {
-            await axios.post(`${API_HOST}/api/v1/chat/${chatId}/message/`, {
-                message: newMessage,
-            });
+            await sendChatMessage(chatId, newMessage);
             messages = [...messages, {message: newMessage, createdAt: Date.now()}];
             newMessage = "";
             await loadMessages()

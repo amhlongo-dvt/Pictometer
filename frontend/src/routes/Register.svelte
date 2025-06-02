@@ -4,7 +4,7 @@
     import axios from "axios";
     import "../styles/auth.css"
     import {authToken} from "../stores/auth"
-    import {API_HOST} from "../constants"
+    import {register} from "../services/authService"
 
     let name = "";
     let email = "";
@@ -19,9 +19,9 @@
         }
     });
 
-    async function register() {
+    async function handleRegister() {
         try {
-            const response = await axios.post(`${API_HOST}/api/v1/auth/register/`, {
+            await register({
                 email,
                 password,
                 name
@@ -47,7 +47,7 @@
 </script>
     
 <div class="auth-container">
-    <form on:submit|preventDefault={register} class="auth-form">
+    <form on:submit|preventDefault={handleRegister} class="auth-form">
         <div class="form-header">
             <h2>Register</h2>
         </div>

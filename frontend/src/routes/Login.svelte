@@ -4,7 +4,7 @@
     import axios from "axios";
     import "../styles/auth.css"
     import {authToken} from "../stores/auth"
-    import {API_HOST} from "../constants"
+    import {login} from "../services/authService"
 
     let email = "";
     let password = "";
@@ -18,13 +18,13 @@
         }
     });
 
-    async function login() {
+    async function handleLogin() {
         try {
-            const response = await axios.post(`${API_HOST}/api/v1/auth/login/`, {
+            const response = await login({
                 email,
                 password,
             });
-            authToken.set(response.data?.token);
+            authToken.set(response.token);
             navigate("/")
         } catch (error) {
             const defaultError = "An unexpected error occurred"
@@ -46,7 +46,7 @@
 </script>
 
 <div class="auth-container">
-    <form on:submit|preventDefault={login} class="auth-form">
+    <form on:submit|preventDefault={handleLogin} class="auth-form">
         <div class="form-header">
             <h2>Login</h2>
         </div>
