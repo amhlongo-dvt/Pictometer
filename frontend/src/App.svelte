@@ -5,6 +5,7 @@
   import Login from './routes/Login.svelte';
   import Chat from './routes/Chat.svelte';
   import CreateImage from "./routes/CreateImage.svelte";
+  import EditImage from "./routes/EditImage.svelte";
 </script>
 
 <Router>
@@ -17,4 +18,5 @@
     <Chat chatId={params.id}/>
   </Route>
   <Route path="/create" component={CreateImage}/>
+  <Route path="/edit" component={EditImage}/>
 </Router>
