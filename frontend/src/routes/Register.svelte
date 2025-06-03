@@ -43,8 +43,9 @@
             const defaultError = "An unexpected error occurred"
             if (axios.isAxiosError(error) && error.response){
                 const errorSlug = error?.response?.data?.error
+                console.log(error)
                 switch (errorSlug) {
-                    case "ERROR_USER_ALREADY_EXISTS":
+                    case "USER_ALREADY_EXIST":
                         errorMessage = "User already exists, try logging in"
                         break;
                     default:
@@ -58,11 +59,11 @@
     }
 </script>
     
-<div class="flex h-screen bg-blue-500">  
+<div class="flex h-screen bg-main">  
     <WelcomePanel />
-    <div class="border-r border-2 border-black"></div>
+    <div class="border-r border-2 border-border"></div>
     <div class="flex-1 flex items-center justify-center p-6">
-        <Card class="w-full max-w-md bg-white">
+        <Card class="w-full max-w-md bg-main">
             <form on:submit|preventDefault={handleRegister} class="p-6">
                 <CardTitle>Sign Up to your account</CardTitle>
                 <CardDescription class="text-gray-600 mb-6">Enter your details below to sign up to your account</CardDescription>
@@ -110,14 +111,14 @@
                 
                 <Button 
                     type="submit" 
-                    class="w-full mt-6 bg-blue-500 hover:bg-blue-600"
+                    class="w-full mt-6 "
                     disabled={!formValid}
                 >
                     Sign Up
                 </Button>
                 
                 <CardDescription class="mt-4 text-center text-sm">
-                    Already have an account? <a href="/login" class="text-blue-500 hover:underline">Log in</a>
+                    Already have an account? <a href="/login" class="text-bw hover:underline">Log in</a>
                 </CardDescription>
             </form>
         </Card>
