@@ -70,7 +70,7 @@
                     <div class="space-y-2">
                       <Label for="prompt">Prompt</Label>
                       <Textarea 
-                        placeholder="Tell us a little bit about yourself"
+                        placeholder="Type a prompt to generate an image"
                         class="resize-none" id="prompt" />
                     </div>
                   </Card.Content> 
