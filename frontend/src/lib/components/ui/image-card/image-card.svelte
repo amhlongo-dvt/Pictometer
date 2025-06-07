@@ -31,7 +31,7 @@
 		<slot name="top" />
 	</div>
 	<img 
-		class="w-full flex-1 min-h-0 {rounded ? "rounded-base" : ""}" 
+		class="w-full  aspect-[4/3] {rounded ? "rounded-base" : ""}" 
 		src={imageUrl} 
 		alt={caption} 
 	/>

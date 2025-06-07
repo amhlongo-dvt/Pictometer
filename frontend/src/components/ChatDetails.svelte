@@ -3,6 +3,7 @@
     import axios from "axios";
     import "../styles/chatDetails.css"
     import { getChatMessages, sendMessage as sendChatMessage } from "../services/chatService"
+    import ImageCard from "../lib/components/ui/image-card/image-card.svelte";
     
     export let chatId: string;
 
@@ -47,24 +48,70 @@
     }
 </script>
 
-<div class="chat-details-wrapper"> 
-    {#if errorMessage}
-        <p class="error">{errorMessage}</p>
-    {/if}
-    <ul>
-        {#each messages as message}
-            <li>
-                {message.message}
-                <span>{new Date(message.createdAt).toLocaleString()}</span>
-            </li>
-        {/each}
-    </ul>
-    <textarea bind:value={newMessage} placeholder="Type a message"></textarea>
-    <button on:click={sendMessage} disabled={isLoading}>
-        {#if isLoading}
-            Sending...
-        {:else}
-            Send
-        {/if}
-    </button>
+<div class="grid grid-cols-2 md:grid-cols-4 gap-4 col-span-3 overflow-y-auto p-4"> 
+
+    <div class="aspect-w-1 aspect-h-1">
+        <ImageCard class="w-full h-auto object-cover rounded" imageUrl="" caption="Hello" />
+    </div>
+    <div class="aspect-w-1 aspect-h-1">
+        <ImageCard class="w-full h-auto object-cover rounded" imageUrl="" caption="Hello" />
+    </div>
+    <div class="aspect-w-1 aspect-h-1">
+        <ImageCard class="w-full h-auto object-cover rounded" imageUrl="" caption="Hello" />
+    </div>
+    <div class="aspect-w-1 aspect-h-1">
+        <ImageCard class="w-full h-auto object-cover rounded" imageUrl="" caption="Hello" />
+    </div>
+    <div class="aspect-w-1 aspect-h-1">
+        <ImageCard class="w-full h-auto object-cover rounded" imageUrl="" caption="Hello" />
+    </div>
+    <div class="aspect-w-1 aspect-h-1">
+        <ImageCard class="w-full h-auto object-cover rounded" imageUrl="" caption="Hello" />
+    </div>
+    <div class="aspect-w-1 aspect-h-1">
+        <ImageCard class="w-full h-auto object-cover rounded" imageUrl="" caption="Hello" />
+    </div>
+    <div class="aspect-w-1 aspect-h-1">
+        <ImageCard class="w-full h-auto object-cover rounded" imageUrl="" caption="Hello" />
+    </div>
+    <div class="aspect-w-1 aspect-h-1">
+        <ImageCard class="w-full h-auto object-cover rounded" imageUrl="" caption="Hello" />
+    </div>
+    <div class="aspect-w-1 aspect-h-1">
+        <ImageCard class="w-full h-auto object-cover rounded" imageUrl="" caption="Hello" />
+    </div>
+    <div class="aspect-w-1 aspect-h-1">
+        <ImageCard class="w-full h-auto object-cover rounded" imageUrl="" caption="Hello" />
+    </div>
+    <div class="aspect-w-1 aspect-h-1">
+        <ImageCard class="w-full h-auto object-cover rounded" imageUrl="" caption="Hello" />
+    </div>
+    <div class="aspect-w-1 aspect-h-1">
+        <ImageCard class="w-full h-auto object-cover rounded" imageUrl="" caption="Hello" />
+    </div>
+    <div class="aspect-w-1 aspect-h-1">
+        <ImageCard class="w-full h-auto object-cover rounded" imageUrl="" caption="Hello" />
+    </div>
+    <div class="aspect-w-1 aspect-h-1">
+        <ImageCard class="w-full h-auto object-cover rounded" imageUrl="" caption="Hello" />
+    </div>
+    <div class="aspect-w-1 aspect-h-1">
+        <ImageCard class="w-full h-auto object-cover rounded" imageUrl="" caption="Hello" />
+    </div>
+    <div class="aspect-w-1 aspect-h-1">
+        <ImageCard class="w-full h-auto object-cover rounded" imageUrl="" caption="Hello" />
+    </div>
+    <div class="aspect-w-1 aspect-h-1">
+        <ImageCard class="w-full h-auto object-cover rounded" imageUrl="" caption="" />
+    </div>
+    <div class="aspect-w-1 aspect-h-1">
+        <ImageCard class="w-full h-auto object-cover rounded" imageUrl="" caption="" />
+    </div>
+    <div class="aspect-w-1 aspect-h-1">
+        <ImageCard class="w-full h-auto object-cover rounded" imageUrl="" caption="" />
+    </div>
+    <div class="aspect-w-1 aspect-h-1">
+        <ImageCard class="w-full h-auto object-cover rounded" imageUrl="" caption="" />
+    </div>
+
 </div>

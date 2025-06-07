@@ -18,14 +18,15 @@
 
 <div>
     <Header></Header>
-    <div class="container">
+    <!-- make this div a grid with 2 columns and the make the div not scrollable-->
+    <div class="grid grid-cols-4 h-[calc(100vh-6vh)]">
        
         <ChatListSideBar chatId={chatId}/>
         
-        <div class="chat-container">
+     
             {#if chatId}
                 <ChatDetails chatId={chatId}/>
             {/if}
-        </div>
+        
     </div>
 </div>
