@@ -51,7 +51,7 @@
             </div>
           </ImageCard>
          
-          <div class="bg-main border-border  p-4 rounded-base border-2 shadow-shadow flex flex-col gap-2 h-full overflow-y-auto">
+          <div class="bg-main border-border  p-4 rounded-base border-2 shadow-shadow flex flex-col gap-2 h-full overflow-y-auto scrollbar">
                 <Card.Root class="w-full shadow-none">
                   <Card.Content>
                     <div class="space-y-2 pt-4">

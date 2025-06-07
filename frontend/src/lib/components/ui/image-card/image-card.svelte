@@ -9,6 +9,7 @@
 		class?: string;
 		rounded?: boolean;
 		shadowVisible?: boolean;
+		isAspect?: boolean;
 	}
 
 	export let imageUrl: string;
@@ -16,6 +17,7 @@
 	export let isCaptionVisible: boolean = true;
 	export let rounded: boolean = false;
 	export let shadowVisible: boolean = true;
+	export let isAspect: boolean = false;
 	
 	let className: $$Props["class"] = undefined;
 	export { className as class };
@@ -34,7 +36,9 @@
 		<slot name="top" />
 	</div>
 	<img 
-		class="w-full  aspect-[4/3] {rounded ? "rounded-base" : ""}" 
+ 
+		class="w-full flex-1  {isAspect ? "aspect-[4/3]" : "min-h-0"} {rounded ? "rounded-base" : ""}" 
+
 		src={imageUrl} 
 		alt={caption} 
 	/>

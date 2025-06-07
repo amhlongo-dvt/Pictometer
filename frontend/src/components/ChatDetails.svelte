@@ -16,7 +16,7 @@
     let newMessage = "";
     let errorMessage: string | null = null;
     let isLoading = false;
-    let isOpen = true;
+    let isOpen = false;
 
     onMount(async () => {
         await loadMessages()
@@ -55,11 +55,11 @@
 <div class="col-span-3 overflow-y-auto scrollbar">
     <Button variant="noShadow" class="w-full rounded-none border-b-4  border-l-0  border-r-0">New Chat</Button>
     <div class="grid grid-cols-2 md:grid-cols-4 gap-4 col-span-3  p-4"> 
-        <button class="aspect-w-1 aspect-h-1" on:click={() => sendMessage()}>
-            <ImageCard class="w-full h-auto object-cover rounded text-left" imageUrl="" caption="Hello" />
+        <button class="aspect-w-1 aspect-h-1 transition-all" on:click={() => sendMessage()}>
+            <ImageCard class="w-full h-auto object-cover rounded text-left hover:translate-x-boxShadowX hover:translate-y-boxShadowY hover:shadow-none" imageUrl="" caption="Hello" isAspect={true} />
         </button>
         <button class="aspect-w-1 aspect-h-1" on:click={() => (isOpen = true)}>
-            <ImageCard class="w-full h-auto object-cover rounded text-left" imageUrl="" caption="Hello" />
+            <ImageCard class="w-full h-auto object-cover rounded text-left" imageUrl="" caption="Hello" isAspect={true} />
         </button>
     </div>
     <Sheet.Root bind:open={isOpen}>
@@ -86,7 +86,7 @@
                     <div class="space-y-2 pt-4 flex flex-col">
                         <Button class="w-full">Edit</Button>
                         <Button class="w-full">Download</Button>
-                        <Button class="w-full">Delete</Button>
+                        <Button class="w-full" variant="neutral">Delete</Button>
                         
                     </div>
             
