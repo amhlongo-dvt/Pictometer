@@ -19,9 +19,9 @@
 <div>
     <Header></Header>
     <div class="container">
-        <div class="chat-list-container">
-            <ChatListSideBar chatId={chatId}/>
-        </div>
+       
+        <ChatListSideBar chatId={chatId}/>
+        
         <div class="chat-container">
             {#if chatId}
                 <ChatDetails chatId={chatId}/>

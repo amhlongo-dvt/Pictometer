@@ -49,7 +49,7 @@
 </script>
 
 
-<aside class=" chat-list-container scrollbar  bottom-[0px]  bg-white dark:bg-secondaryBlack h-[calc(100svh)] max-h-[calc(100svh)] w-[250px] overflow-y-auto border-r-4 border-border dark:border-darkNavBorder">
+<aside class="scrollbar bg-white dark:bg-secondaryBlack h-full w-[250px] overflow-y-auto border-r-4 border-border dark:border-darkNavBorder">
     {#if errorMessage}
         <div class="error">{errorMessage}</div>
     {/if}
@@ -62,21 +62,22 @@
     {/if}
 
     {#if chats.length === 0}
-        <div class="no-chats">
+
+        <div class="text-center p-4">
             No chats available. Create a new one!
         </div>
     {/if}
 
     <Button variant="noShadow" class="w-full rounded-none border-b-4  border-l-0  border-r-0" on:click={createNewChat}>New Chat</Button>
-    <ul class="chat-list">
+    <ul>
         {#each chats as chat (chat.id)}
-            <div 
-                class="block border-b-4  border-border dark:border-darkNavBorder p-4 pl-7 text-lg font-base text-text/90 dark:text-darkText/90 hover:bg-main dark:hover:text-text" 
+            <button 
+                class="block border-b-4 w-full text-left border-border dark:border-darkNavBorder p-4 pl-7 text-lg font-base text-text/90 dark:text-darkText/90 hover:bg-main dark:hover:text-text" 
                 class:selected={chat.id === chatId}
                 on:click={() => selectChat(chat.id)}
             >
                 {chat.name}
-            </div>
+            </button>
         {/each}
     </ul>    
     

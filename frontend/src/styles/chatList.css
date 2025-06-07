@@ -52,13 +52,10 @@ html.dark .scrollbar,html.dark body {
 }
 
 .scrollbar::-webkit-scrollbar-track,body::-webkit-scrollbar-track {
-    background: var(--sb-track-color)
+    background: var(--sb-track-color);
+    border-left: 4px solid black;
 }
 
 .scrollbar::-webkit-scrollbar-thumb,body::-webkit-scrollbar-thumb {
     background: var(--sb-thumb-color)
-}
-
-.code::-webkit-scrollbar-track {
-    background: transparent
 }
