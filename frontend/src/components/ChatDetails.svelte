@@ -4,7 +4,8 @@
     import "../styles/chatDetails.css"
     import { getChatMessages, sendMessage as sendChatMessage } from "../services/chatService"
     import ImageCard from "../lib/components/ui/image-card/image-card.svelte";
-    
+    import {Button} from "../lib/components/ui/button"
+    import * as Sheet from "$lib/components/ui/sheet";
     export let chatId: string;
 
     let messages: {message: string, createdAt: number}[] = [];
@@ -47,71 +48,26 @@
         }
     }
 </script>
-
-<div class="grid grid-cols-2 md:grid-cols-4 gap-4 col-span-3 overflow-y-auto p-4"> 
-
-    <div class="aspect-w-1 aspect-h-1">
-        <ImageCard class="w-full h-auto object-cover rounded" imageUrl="" caption="Hello" />
+<div class="col-span-3 overflow-y-auto scrollbar">
+    <Button variant="noShadow" class="w-full rounded-none border-b-4  border-l-0  border-r-0">New Chat</Button>
+    <div class="grid grid-cols-2 md:grid-cols-4 gap-4 col-span-3  p-4"> 
+        <button class="aspect-w-1 aspect-h-1" on:click={() => sendMessage()}>
+            <ImageCard class="w-full h-auto object-cover rounded text-left" imageUrl="" caption="Hello" />
+        </button>
+        <button class="aspect-w-1 aspect-h-1">
+            <ImageCard class="w-full h-auto object-cover rounded text-left" imageUrl="" caption="Hello" />
+        </button>
     </div>
-    <div class="aspect-w-1 aspect-h-1">
-        <ImageCard class="w-full h-auto object-cover rounded" imageUrl="" caption="Hello" />
-    </div>
-    <div class="aspect-w-1 aspect-h-1">
-        <ImageCard class="w-full h-auto object-cover rounded" imageUrl="" caption="Hello" />
-    </div>
-    <div class="aspect-w-1 aspect-h-1">
-        <ImageCard class="w-full h-auto object-cover rounded" imageUrl="" caption="Hello" />
-    </div>
-    <div class="aspect-w-1 aspect-h-1">
-        <ImageCard class="w-full h-auto object-cover rounded" imageUrl="" caption="Hello" />
-    </div>
-    <div class="aspect-w-1 aspect-h-1">
-        <ImageCard class="w-full h-auto object-cover rounded" imageUrl="" caption="Hello" />
-    </div>
-    <div class="aspect-w-1 aspect-h-1">
-        <ImageCard class="w-full h-auto object-cover rounded" imageUrl="" caption="Hello" />
-    </div>
-    <div class="aspect-w-1 aspect-h-1">
-        <ImageCard class="w-full h-auto object-cover rounded" imageUrl="" caption="Hello" />
-    </div>
-    <div class="aspect-w-1 aspect-h-1">
-        <ImageCard class="w-full h-auto object-cover rounded" imageUrl="" caption="Hello" />
-    </div>
-    <div class="aspect-w-1 aspect-h-1">
-        <ImageCard class="w-full h-auto object-cover rounded" imageUrl="" caption="Hello" />
-    </div>
-    <div class="aspect-w-1 aspect-h-1">
-        <ImageCard class="w-full h-auto object-cover rounded" imageUrl="" caption="Hello" />
-    </div>
-    <div class="aspect-w-1 aspect-h-1">
-        <ImageCard class="w-full h-auto object-cover rounded" imageUrl="" caption="Hello" />
-    </div>
-    <div class="aspect-w-1 aspect-h-1">
-        <ImageCard class="w-full h-auto object-cover rounded" imageUrl="" caption="Hello" />
-    </div>
-    <div class="aspect-w-1 aspect-h-1">
-        <ImageCard class="w-full h-auto object-cover rounded" imageUrl="" caption="Hello" />
-    </div>
-    <div class="aspect-w-1 aspect-h-1">
-        <ImageCard class="w-full h-auto object-cover rounded" imageUrl="" caption="Hello" />
-    </div>
-    <div class="aspect-w-1 aspect-h-1">
-        <ImageCard class="w-full h-auto object-cover rounded" imageUrl="" caption="Hello" />
-    </div>
-    <div class="aspect-w-1 aspect-h-1">
-        <ImageCard class="w-full h-auto object-cover rounded" imageUrl="" caption="Hello" />
-    </div>
-    <div class="aspect-w-1 aspect-h-1">
-        <ImageCard class="w-full h-auto object-cover rounded" imageUrl="" caption="" />
-    </div>
-    <div class="aspect-w-1 aspect-h-1">
-        <ImageCard class="w-full h-auto object-cover rounded" imageUrl="" caption="" />
-    </div>
-    <div class="aspect-w-1 aspect-h-1">
-        <ImageCard class="w-full h-auto object-cover rounded" imageUrl="" caption="" />
-    </div>
-    <div class="aspect-w-1 aspect-h-1">
-        <ImageCard class="w-full h-auto object-cover rounded" imageUrl="" caption="" />
-    </div>
-
+    <Sheet.Root>
+        <Sheet.Trigger>Open</Sheet.Trigger>
+        <Sheet.Content>
+          <Sheet.Header>
+            <Sheet.Title>Are you sure absolutely sure?</Sheet.Title>
+            <Sheet.Description>
+              This action cannot be undone. This will permanently delete your account
+              and remove your data from our servers.
+            </Sheet.Description>
+          </Sheet.Header>
+        </Sheet.Content>
+      </Sheet.Root>
 </div>
