@@ -4,7 +4,8 @@
     import {navigate} from "svelte-routing"
     import CreateChatPopup from "./CreateChatPopup.svelte";
     import { getChatList } from "../services/chatService"
-    
+    import {Button} from "../lib/components/ui/button"
+
     let chats: {id: string, name: string}[] = [];
     let errorMessage: string | null = null;
     
@@ -47,7 +48,8 @@
     }
 </script>
 
-<div class="chat-list-container">
+
+<aside class=" chat-list-container scrollbar  bottom-[0px]  bg-white dark:bg-secondaryBlack h-[calc(100svh)] max-h-[calc(100svh)] w-[250px] overflow-y-auto border-r-4 border-border dark:border-darkNavBorder">
     {#if errorMessage}
         <div class="error">{errorMessage}</div>
     {/if}
@@ -65,16 +67,19 @@
         </div>
     {/if}
 
+    <Button variant="noShadow" class="w-full rounded-none border-b-4  border-l-0  border-r-0" on:click={createNewChat}>New Chat</Button>
     <ul class="chat-list">
         {#each chats as chat (chat.id)}
-            <button 
-                class="chat-list-item" 
+            <div 
+                class="block border-b-4  border-border dark:border-darkNavBorder p-4 pl-7 text-lg font-base text-text/90 dark:text-darkText/90 hover:bg-main dark:hover:text-text" 
                 class:selected={chat.id === chatId}
                 on:click={() => selectChat(chat.id)}
             >
                 {chat.name}
-            </button>
+            </div>
         {/each}
     </ul>    
-    <button on:click={createNewChat}>New Chat</button>
-</div>
+    
+</aside>
+
+

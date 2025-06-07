@@ -35,3 +35,30 @@
     background-color: #579ae8;
     color: white;
 }
+
+.scrollbar,body {
+    --sb-track-color: #fff;
+    --sb-thumb-color: #000;
+    --sb-size: 16px
+}
+
+html.dark .scrollbar,html.dark body {
+    --sb-track-color: #212121;
+    --sb-thumb-color: #e6e6e6
+}
+
+.scrollbar::-webkit-scrollbar,body::-webkit-scrollbar {
+    width: var(--sb-size)
+}
+
+.scrollbar::-webkit-scrollbar-track,body::-webkit-scrollbar-track {
+    background: var(--sb-track-color)
+}
+
+.scrollbar::-webkit-scrollbar-thumb,body::-webkit-scrollbar-thumb {
+    background: var(--sb-thumb-color)
+}
+
+.code::-webkit-scrollbar-track {
+    background: transparent
+}

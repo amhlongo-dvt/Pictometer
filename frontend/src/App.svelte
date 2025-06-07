@@ -14,7 +14,7 @@
   <Route>
     <Chat chatId = {null}/>
   </Route>
-  <Route path="/:id" let:params>
+<Route path="/:id" let:params>
     <Chat chatId={params.id}/>
   </Route>
   <Route path="/create" component={CreateImage}/>
