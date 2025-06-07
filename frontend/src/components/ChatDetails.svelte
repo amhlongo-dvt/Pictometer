@@ -6,13 +6,17 @@
     import ImageCard from "../lib/components/ui/image-card/image-card.svelte";
     import {Button} from "../lib/components/ui/button"
     import * as Sheet from "$lib/components/ui/sheet";
+  import * as Card from "$lib/components/ui/card";
+  import { Slider } from "$lib/components/ui/slider";
+  import { Label } from "$lib/components/ui/label";
+
     export let chatId: string;
 
     let messages: {message: string, createdAt: number}[] = [];
     let newMessage = "";
     let errorMessage: string | null = null;
     let isLoading = false;
-
+    let isOpen = true;
 
     onMount(async () => {
         await loadMessages()
@@ -54,20 +58,38 @@
         <button class="aspect-w-1 aspect-h-1" on:click={() => sendMessage()}>
             <ImageCard class="w-full h-auto object-cover rounded text-left" imageUrl="" caption="Hello" />
         </button>
-        <button class="aspect-w-1 aspect-h-1">
+        <button class="aspect-w-1 aspect-h-1" on:click={() => (isOpen = true)}>
             <ImageCard class="w-full h-auto object-cover rounded text-left" imageUrl="" caption="Hello" />
         </button>
     </div>
-    <Sheet.Root>
-        <Sheet.Trigger>Open</Sheet.Trigger>
-        <Sheet.Content>
-          <Sheet.Header>
-            <Sheet.Title>Are you sure absolutely sure?</Sheet.Title>
-            <Sheet.Description>
-              This action cannot be undone. This will permanently delete your account
-              and remove your data from our servers.
-            </Sheet.Description>
-          </Sheet.Header>
+    <Sheet.Root bind:open={isOpen}>
+        
+        <Sheet.Content class="space-y-2 ">
+            <ImageCard class="w-full h-auto object-cover rounded text-left shadow-none mt-6" imageUrl="" caption="Hello" isCaptionVisible={false} shadowVisible={false} />
+                
+            
+                <Card.Root class="w-full shadow-sm">
+                    <Card.Content>
+                    <div class="space-y-2 pt-4 flex flex-col">
+                        <Label >Name</Label>
+                        <Sheet.Description>Landscape artist</Sheet.Description>
+                        <Label>Size</Label>
+                        <Sheet.Description>1.9 MB</Sheet.Description>
+                        <Label>Date</Label>
+                        <Sheet.Description>19/04/2021</Sheet.Description>
+                        
+                    </div>
+                    </Card.Content> 
+                    
+                </Card.Root>
+                
+                    <div class="space-y-2 pt-4 flex flex-col">
+                        <Button class="w-full">Edit</Button>
+                        <Button class="w-full">Download</Button>
+                        <Button class="w-full">Delete</Button>
+                        
+                    </div>
+            
         </Sheet.Content>
       </Sheet.Root>
 </div>

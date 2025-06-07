@@ -8,12 +8,14 @@
 		isCaptionVisible?: boolean;
 		class?: string;
 		rounded?: boolean;
+		shadowVisible?: boolean;
 	}
 
 	export let imageUrl: string;
 	export let caption: string;
 	export let isCaptionVisible: boolean = true;
 	export let rounded: boolean = false;
+	export let shadowVisible: boolean = true;
 	
 	let className: $$Props["class"] = undefined;
 	export { className as class };
@@ -21,7 +23,8 @@
 
 <figure
 	class={cn(
-		"w-full h-full overflow-hidden rounded-base border-2 border-border bg-main font-base shadow-shadow flex flex-col",
+		"w-full h-full overflow-hidden rounded-base border-2 border-border bg-main font-base  flex flex-col",
+		shadowVisible ? "shadow-shadow" : "",
 		className
 	)}
 	{...$$restProps}
