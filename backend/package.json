@@ -10,6 +10,7 @@
     "pino": "^9.6.0",
     "prisma": "^5.7.1",
     "sharp": "^0.34.1",
+    "together-ai": "^0.16.0",
     "uuid": "^11.1.0"
   },
   "devDependencies": {

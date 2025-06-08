@@ -73,7 +73,7 @@ export function createChatApp(
         const userMessage: DBCreateMessage = {message, chatId, type:"user"}
         await messageResource.create(userMessage);
         const allMessages = await messageResource.findAll({chatId});
-        const response = await generateMessageResponse(allMessages);
+        const response = await generateMessageResponse(userMessage);
         const responseMessage: DBCreateMessage = {
             message: response,
             chatId,

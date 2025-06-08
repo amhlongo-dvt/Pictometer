@@ -10,12 +10,39 @@
     import { Input } from "$lib/components/ui/input/index.js";
     import { Label } from "$lib/components/ui/label/index.js";
   import Textarea from "$lib/components/ui/textarea/textarea.svelte";
-        
-    onMount(() => {
+  import {getChatMessages, sendMessage} from "../services/chatService"
+  onMount(() => {
         if (!$authToken){
             navigate("/register")
+          }
+        });
+        let message = ""
+        let imageUrl = ""
+        async function generateImage(message: string){
+            await sendMessage("0", message)
+            const response = await getChatMessages("0");
+            imageUrl = response.chats[response.chats.length - 1].message;
         }
-    });
+        const reader = new FileReader();
+        let file: File | undefined = undefined;
+
+        function handleFileChange(event: Event) {
+            const target = event.target as HTMLInputElement;
+            file = target.files?.[0];
+            if (file) {
+                reader.onload = (e) => {
+                    const result = e.target?.result as string;
+                    imageUrl = result;
+                };
+                reader.readAsDataURL(file);
+            }
+        }
+
+        function clearImage(){
+            imageUrl = ""
+            file = undefined;
+            reader.abort();
+        }
 </script>
 
 <div class="flex flex-col h-screen">
@@ -28,8 +55,8 @@
          
           <ImageCard
             class="col-span-3 w-full"
-            imageUrl="https://picsum.photos/seed/picsum123/800/600"
-            caption="Image caption"
+            imageUrl={imageUrl}
+            caption={file? `${file?.name}` : ""}
           />
     
          
@@ -50,11 +77,11 @@
                   <Card.Content class="space-y-2">
                     <div class="space-y-2">
                       <Label for="file">File</Label>
-                      <Input type="file" id="file" />
+                      <Input type="file" id="file" on:change={handleFileChange} />
                     </div>
                   </Card.Content>
                   <Card.Footer>
-                    <Button>Clear</Button>
+                    <Button variant="noShadow" class="w-full" on:click={() => {clearImage()}}>Clear</Button>
                   </Card.Footer>
                 </Card.Root>
               </Tabs.Content>
@@ -71,11 +98,13 @@
                       <Label for="prompt">Prompt</Label>
                       <Textarea 
                         placeholder="Type a prompt to generate an image"
-                        class="resize-none" id="prompt" />
+                        class="resize-none" id="prompt" 
+                        bind:value={message}
+                        />
                     </div>
                   </Card.Content> 
                   <Card.Footer>
-                    <Button>Generate</Button>
+                    <Button variant="noShadow"  on:click={() => {generateImage(message)}}>Generate</Button>
                   </Card.Footer>
                 </Card.Root>
               </Tabs.Content>
