@@ -11,14 +11,25 @@
     import { Label } from "$lib/components/ui/label/index.js";
     import Textarea from "$lib/components/ui/textarea/textarea.svelte";
     import { Undo2, Redo2, X, RotateCw, RotateCcw } from "lucide-svelte";
+  import { getImage } from "../services/imageService";
         
     onMount(() => {
         if (!$authToken){
             navigate("/register")
         }
     });
-</script>
+    export let imageId:string;
 
+    let image;
+    let imageUrl:string = "";
+  
+    onMount(async () => {
+        image = await getImage(imageId);
+        imageUrl = image.imageUrl;
+        console.log(image)
+    })
+</script>
+<!-- USE THIS IMAGE URL -->
 <div class="flex flex-col h-screen">
     <Header/>
     
@@ -30,7 +41,7 @@
             
             <ImageCard
               class="col-span-3 w-full p-4 bg-bw"
-              imageUrl="https://picsum.photos/seed/picsum123/800/600"
+              imageUrl={imageUrl}
               caption="Image caption"
               isCaptionVisible={false}
               rounded={true}
