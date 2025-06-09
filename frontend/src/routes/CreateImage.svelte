@@ -11,6 +11,8 @@
     import { Label } from "$lib/components/ui/label/index.js";
   import Textarea from "$lib/components/ui/textarea/textarea.svelte";
   import {getChatMessages, sendMessage} from "../services/chatService"
+  import { createImage, generateImage } from "../services/imageService";
+  import axios from "axios";
   onMount(() => {
         if (!$authToken){
             navigate("/register")
@@ -18,17 +20,24 @@
         });
         let message = ""
         let imageUrl = ""
-        async function generateImage(message: string){
+        let file: File | null = null;
+        let isGenerated = false;
+        let imageId: string;
+        const reader = new FileReader();
+
+        async function generateImageFromPrompt(message: string){
             await sendMessage("0", message)
             const response = await getChatMessages("0");
             imageUrl = response.chats[response.chats.length - 1].message;
+            const response2 = await generateImage(imageUrl)
+            imageId = response2.imageId;
+            isGenerated = true;
+            
         }
-        const reader = new FileReader();
-        let file: File | undefined = undefined;
 
         function handleFileChange(event: Event) {
             const target = event.target as HTMLInputElement;
-            file = target.files?.[0];
+            file = target.files![0];
             if (file) {
                 reader.onload = (e) => {
                     const result = e.target?.result as string;
@@ -38,10 +47,18 @@
             }
         }
 
+        async function createImageFile(){
+          if(!isGenerated && file){
+            const response = await createImage(file);
+            imageId = response.imageId;
+          }
+          navigate(`/edit/${imageId}`);
+        }
+
         function clearImage(){
             imageUrl = ""
-            file = undefined;
             reader.abort();
+            file = null;
         }
 </script>
 
@@ -104,12 +121,12 @@
                     </div>
                   </Card.Content> 
                   <Card.Footer>
-                    <Button variant="noShadow"  on:click={() => {generateImage(message)}}>Generate</Button>
+                    <Button variant="noShadow"  on:click={() => {generateImageFromPrompt(message)}}>Generate</Button>
                   </Card.Footer>
                 </Card.Root>
               </Tabs.Content>
             </Tabs.Root>
-            <Button class="w-full">Edit</Button>
+            <Button class="w-full" variant="noShadow" on:click={() => createImageFile()}>Create</Button>
           </div>
 
 

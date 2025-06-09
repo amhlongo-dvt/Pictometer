@@ -6,12 +6,13 @@ import type {
  } from "../models/db";
 import type { IDatabaseResource } from "../storage/types";
 
-export const IMAGE_PREFIX = "/images/";
+export const IMAGE_PREFIX = "/image/";
 export const IMAGE_ROUTE = "";
+export const IMAGE_ROUTE_GENERATE = "generate";
 export const IMAGE_ID_ROUTE = "/:imageId";
 export const IMAGE_ID_EDIT_ROUTE = "/:imageId/edit";
 
-import { randomUUIDv7, S3Client } from "bun";
+import { file, randomUUIDv7, S3Client } from "bun";
 import sharp from "sharp";
 
 const client = new S3Client({
@@ -68,6 +69,37 @@ export function createImageApp(
             metadata: imageMetadata
         })
     })
+    imageApp.post(IMAGE_ROUTE_GENERATE, async (c) => {
+        const userId = c.get("userId");
+        
+        const {url} = await c.req.json<{ url: string }>();
+        
+        const imageId = randomUUIDv7();
+        const s3key = `${userId}/${imageId}-generated-image.jpg`;
+        const res = await fetch(url);
+
+        const imageMetadata:DBCreateImage = {
+            ownerId: userId, 
+            contentType: "image/jpeg", 
+            filename: "generated-image.jpg", 
+            s3key, 
+            size: 300
+        }
+        
+        const imageRes = await imageResource.create(imageMetadata)
+        
+        await client.write(s3key, res)
+
+        return c.json({
+            success: true,
+            imageId: imageRes.id,
+            imageUrl: client.file(s3key).presign({
+                expiresIn: 7 * 24 * 60 * 60, // 7 days
+                acl: "public-read"
+            }),
+            metadata: imageMetadata
+        })
+    })
 
     imageApp.get(IMAGE_ID_ROUTE, async (c) => {
         const imageId = c.req.param("imageId")
@@ -82,9 +114,14 @@ export function createImageApp(
             try {
                 const response = client.file(imageMetadata.s3key)
 
-                c.header("Content-Type", imageMetadata.contentType);
-
-                return c.body(await response.arrayBuffer())
+                return c.json({
+                    success: true,
+                    imageUrl: response.presign({
+                        expiresIn: 7 * 24 * 60 * 60, // 7 days
+                        acl: "public-read"
+                    }),
+                    metadata: imageMetadata
+                })
             } catch (error) {
                 
             }
