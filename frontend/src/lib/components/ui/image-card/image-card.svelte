@@ -10,8 +10,9 @@
 		rounded?: boolean;
 		shadowVisible?: boolean;
 		isAspect?: boolean;
-		previewFilter?: string
-	}
+		previewFilter?: string;
+		aspectClass?: string;
+		}
 
 	export let imageUrl: string;
 	export let caption: string;
@@ -20,6 +21,10 @@
 	export let shadowVisible: boolean = true;
 	export let isAspect: boolean = false;
 	export let previewFilter: string = "";
+	export let aspectClass: string = "";
+
+	
+
 	console.log(previewFilter);
 	
 	
@@ -41,7 +46,7 @@
 	</div>
 	<img 
  
-		class="w-full flex-1  {isAspect ? "aspect-[4/3]" : "min-h-0"} {rounded ? "rounded-base" : ""}" 
+		class="w-full flex-1  {isAspect ? aspectClass : "min-h-0"} {rounded ? "rounded-base" : ""} object-fill" 
 		style={ previewFilter}
 		src={imageUrl} 
 		alt={caption} 

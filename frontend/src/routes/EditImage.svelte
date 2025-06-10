@@ -11,7 +11,7 @@
     import { Label } from "$lib/components/ui/label/index.js";
     import Textarea from "$lib/components/ui/textarea/textarea.svelte";
     import { Undo2, Redo2, X, RotateCw, RotateCcw, FlipHorizontal, FlipVertical } from "lucide-svelte";
-  import { getImage } from "../services/imageService";
+  import { getImage, editImage } from "../services/imageService";
         
     onMount(async () => {
         if (!$authToken){
@@ -29,17 +29,46 @@
     let contrast = [100];
     let saturation = [100];
     let rotation = [0];
-    let crop = {
-        x: 0,
-        y: 0,
-        width: 0,
-        height: 0
+    let resize = {
+        width: "auto",
+        height: "auto"
     }
     let flipHorizontal = false;
     let flipVertical = false;
+    let isAspect = false;
     $: previewFilter = ` 
     filter: brightness(${brightness[0]}%) contrast(${contrast[0]}%) saturate(${saturation[0]}%); 
-    transform: rotate(${rotation[0]}deg) ${flipHorizontal ? "scaleX(-1)" : ""} ${flipVertical ? "scaleY(-1)" : ""};`;
+    transform: rotate(${rotation[0]}deg) ${flipHorizontal ? "scaleX(-1)" : ""} ${flipVertical ? "scaleY(-1)" : ""};
+`;
+    let aspectClass = "";
+
+    $: transformations = {
+      // fomat the values between 0 to 2 
+            brightness: brightness[0]/100,
+            contrast: contrast[0]/100,
+            saturation: saturation[0]/100,
+            rotation: rotation[0],
+            flipHorizontal: flipHorizontal,
+            flipVertical: flipVertical,
+            ...(resize.width !== "auto" && resize.height !== "auto"
+    ? { resize: { width: Number(resize.width), height: Number(resize.height) } }
+    : {}),
+  }
+  $: rotation[0] = rotation[0] % 360;
+
+    async function saveImage() {
+        
+        
+        const response = await editImage(imageId, transformations);
+        navigate("/")
+    }
+    const debounce = (func: Function, delay = 300): Function => {
+    let timeoutId: NodeJS.Timeout;
+    return (...args: any[]) => {
+      clearTimeout(timeoutId);
+      timeoutId = setTimeout(() => func(...args), delay);
+    };
+  }
 
 </script>
 <!-- USE THIS IMAGE URL -->
@@ -59,6 +88,8 @@
               isCaptionVisible={false}
               rounded={true}
               previewFilter={previewFilter}
+              isAspect={isAspect}
+              aspectClass={aspectClass}
             >
             <div slot="top" class="py-4 w-full flex flex-row justify-between gap-2">
               <div class="pr-0 flex flex-row justify-end gap-1">
@@ -106,11 +137,10 @@
                 <Card.Root class="w-full shadow-none">
                   <Card.Content>
                     <div class="space-y-2 pt-4 ">
-                      <h1 class="font-heading">Crop</h1>
-                      <Button variant="noShadow" class="font-bold" on:click={() => {crop.x = 0; crop.y = 0; crop.width = 0; crop.height = 0}}>1:1</Button>
-                      <Button variant="noShadow" class="font-bold" on:click={() => {crop.x = 0; crop.y = 0; crop.width = 0; crop.height = 0}}>4:3</Button>
-                      <Button variant="noShadow" class="font-bold" on:click={() => {crop.x = 0; crop.y = 0; crop.width = 0; crop.height = 0}}>16:9</Button>
-                      <Button variant="noShadow" class="font-bold" on:click={() => {crop.x = 0; crop.y = 0; crop.width = 0; crop.height = 0}}>Free</Button>
+                      <h1 class="font-heading">Resize</h1>
+                      <Button variant="noShadow" class="font-bold" on:click={() => {resize.width = "1024"; resize.height = "1024"; aspectClass = "aspect-[1/1]"; isAspect = false}}>1:1</Button>
+                      <Button variant="noShadow" class="font-bold" on:click={() => {resize.width = "1920"; resize.height = "1080"; aspectClass = "aspect-[16/9]"; isAspect = true}}>16:9</Button>
+                      <Button variant="noShadow" class="font-bold" on:click={() => {resize.width = "1920"; resize.height = "1440"; aspectClass = "aspect-[4/3]"; isAspect = true}}>4:3</Button>
                     </div>
                   </Card.Content> 
                 </Card.Root>
@@ -119,6 +149,8 @@
                     <div class=" pt-4 flex flex-row justify-between">
                       <div>
                         <h1 class="font-heading">Rotate</h1>
+                        <!-- cap rotation to 360 -->
+
                         <Button variant="noShadow" on:click={() => rotation[0] -= 90}><RotateCcw strokeWidth="3"/></Button>
                         <Button variant="noShadow" on:click={() => rotation[0] += 90}><RotateCw strokeWidth="3"/></Button>
                       </div>

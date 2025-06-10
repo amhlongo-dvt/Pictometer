@@ -26,7 +26,7 @@ export interface CreateImageResponse {
 
 export interface ImageTransformations {
     resize?: {
-        width: number;
+        width: number ;
         height: number;
     };
     crop?: {
