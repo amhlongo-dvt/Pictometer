@@ -10,6 +10,7 @@
 		rounded?: boolean;
 		shadowVisible?: boolean;
 		isAspect?: boolean;
+		previewFilter?: string
 	}
 
 	export let imageUrl: string;
@@ -18,6 +19,9 @@
 	export let rounded: boolean = false;
 	export let shadowVisible: boolean = true;
 	export let isAspect: boolean = false;
+	export let previewFilter: string = "";
+	console.log(previewFilter);
+	
 	
 	let className: $$Props["class"] = undefined;
 	export { className as class };
@@ -38,7 +42,7 @@
 	<img 
  
 		class="w-full flex-1  {isAspect ? "aspect-[4/3]" : "min-h-0"} {rounded ? "rounded-base" : ""}" 
-
+		style={ previewFilter}
 		src={imageUrl} 
 		alt={caption} 
 	/>
