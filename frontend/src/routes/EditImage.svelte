@@ -10,8 +10,8 @@
     import { Input } from "$lib/components/ui/input/index.js";
     import { Label } from "$lib/components/ui/label/index.js";
     import Textarea from "$lib/components/ui/textarea/textarea.svelte";
-    import { Undo2, Redo2, X, RotateCw, RotateCcw, FlipHorizontal, FlipVertical } from "lucide-svelte";
-  import { getImage, editImage } from "../services/imageService";
+    import { Undo2, Redo2, X, RotateCw, RotateCcw, FlipHorizontal, FlipVertical, Save } from "lucide-svelte";
+    import { getImage, editImage, type ImageTransformations } from "../services/imageService";
         
     onMount(async () => {
         if (!$authToken){
@@ -25,51 +25,118 @@
 
     let image;
     let imageUrl:string = "";
-    let brightness = [100];
-    let contrast = [100];
-    let saturation = [100];
-    let rotation = [0];
-    let resize = {
-        width: "auto",
-        height: "auto"
-    }
-    let flipHorizontal = false;
-    let flipVertical = false;
-    let isAspect = false;
-    $: previewFilter = ` 
-    filter: brightness(${brightness[0]}%) contrast(${contrast[0]}%) saturate(${saturation[0]}%); 
-    transform: rotate(${rotation[0]}deg) ${flipHorizontal ? "scaleX(-1)" : ""} ${flipVertical ? "scaleY(-1)" : ""};
-`;
-    let aspectClass = "";
+
+    let brightness:number[] = [100];
+    let contrast:number[] = [100];
+    let saturation:number[] = [100];
+    let rotation:number[] = [0];
+    let resize:{width: number; height: number} = {width: 0, height: 0};
+    let flipHorizontal:boolean = false;
+    let flipVertical:boolean = false;
+    let isAspect:boolean = false;
+    let history:{
+        brightness: number;
+        contrast: number;
+        saturation: number;
+        rotation: number;
+        flipHorizontal: boolean;
+        flipVertical: boolean;
+        resize?: {
+            width: number;
+            height: number;
+        };
+    }[] = [];
+    let redoIndex = 0
+
+
 
     $: transformations = {
-      // fomat the values between 0 to 2 
             brightness: brightness[0]/100,
             contrast: contrast[0]/100,
             saturation: saturation[0]/100,
             rotation: rotation[0],
             flipHorizontal: flipHorizontal,
-            flipVertical: flipVertical,
-            ...(resize.width !== "auto" && resize.height !== "auto"
-    ? { resize: { width: Number(resize.width), height: Number(resize.height) } }
-    : {}),
-  }
-  $: rotation[0] = rotation[0] % 360;
+            flipVertical: flipVertical,        
+            ...(resize.width !==0 && resize.height !== 0
+            ? { resize: { width: Number(resize.width), height: Number(resize.height) } }
+            : {}),
 
-    async function saveImage() {
-        
-        
-        const response = await editImage(imageId, transformations);
-        navigate("/")
     }
-    const debounce = (func: Function, delay = 300): Function => {
-    let timeoutId: NodeJS.Timeout;
-    return (...args: any[]) => {
-      clearTimeout(timeoutId);
-      timeoutId = setTimeout(() => func(...args), delay);
-    };
-  }
+    $: rotation[0] = rotation[0] % 360;
 
+    async function updateImage() {
+        history.push(transformations);
+        const response = await editImage(imageId, transformations);
+        imageUrl = response.imageUrl;
+    }
+
+
+    const debounce = (func: Function, delay = 300): Function => {
+        let timeoutId: NodeJS.Timeout;
+        return (...args: any[]) => {
+            clearTimeout(timeoutId);
+            timeoutId = setTimeout(() => func(...args), delay);
+        };
+    }
+
+    const updateImageDebounced = debounce(updateImage);
+
+    $:if (brightness || contrast || saturation || rotation || flipHorizontal || flipVertical || resize.width || resize.height) {
+            updateImageDebounced();
+        };
+
+    function undo() {
+      
+      if (redoIndex < history.length - 1) {
+          redoIndex++;
+          const transformation = history[history.length - redoIndex - 1];
+          updateTransforms(transformation);
+        }
+    }
+    function redo() {
+        if (redoIndex > 0) {
+            redoIndex--;
+            const transformation = history[history.length - redoIndex - 1];
+            updateTransforms(transformation);
+          }
+    }
+
+    function clearImage() {
+        brightness = [100];
+        contrast = [100];
+        saturation = [100];
+        rotation = [0];
+        flipHorizontal = false;
+        flipVertical = false;
+        resize = {
+            width: 0,   
+            height: 0
+        }
+        history = [];
+        redoIndex = 0;
+    }
+
+
+
+
+  function updateTransforms(transformations: {
+    resize?: { width: number; height: number; }
+    brightness: number; contrast: number; saturation: number; rotation: number; flipHorizontal: boolean; flipVertical: boolean;
+  }) {
+    brightness = [transformations.brightness * 100];
+    contrast = [transformations.contrast * 100];
+    saturation = [transformations.saturation * 100];
+    rotation = [transformations.rotation];
+    flipHorizontal = transformations.flipHorizontal;
+    flipVertical = transformations.flipVertical;
+   
+    if (transformations.resize) {
+        resize = {
+            width: transformations.resize.width,
+            height: transformations.resize.height
+        }
+    }
+  }
 </script>
 <!-- USE THIS IMAGE URL -->
 <div class="flex flex-col h-screen">
@@ -87,23 +154,22 @@
               caption="Image caption"
               isCaptionVisible={false}
               rounded={true}
-              previewFilter={previewFilter}
-              isAspect={isAspect}
-              aspectClass={aspectClass}
+       
+              
             >
             <div slot="top" class="py-4 w-full flex flex-row justify-between gap-2">
               <div class="pr-0 flex flex-row justify-end gap-1">
-                <Button variant="noShadow">
-                  <Undo2 strokeWidth="2.5"/> Undo
+                <Button variant="noShadow" on:click={undo}>
+                  <Undo2 strokeWidth="2.5" /> Undo
                 </Button>
-                <Button variant="noShadow">
+                <Button variant="noShadow" on:click={redo}>
                   <Redo2 strokeWidth="2.5"/> Redo
                 </Button>
-                <Button variant="noShadow">
+                <Button variant="noShadow" on:click={clearImage}>
                   <X strokeWidth="2.5"/> Clear
                 </Button>
               </div>
-              <Button variant="noShadow">Save</Button>
+              <Button variant="noShadow"><Save stroke-width="2.5"/>Save</Button>
             </div>
           </ImageCard>
           <div class="bg-main border-border  p-4 rounded-base border-2 shadow-shadow flex flex-col gap-2 h-full overflow-y-auto scrollbar">
@@ -126,11 +192,11 @@
                     <div class="space-y-2 pt-4">
                       <h1 class="mb-2 font-heading">Adjustments</h1>
                       <Label  for="prompt">Brigthness</Label>
-                      <Slider  bind:value={brightness}  max={200} step={1}/>
+                      <Slider  bind:value={brightness} min={0} max={200} step={1}/>
                       <Label  for="prompt">Contrast</Label>
-                      <Slider  bind:value={contrast}  max={200} step={1}/>
+                      <Slider  bind:value={contrast} min={0} max={200} step={1}/>
                       <Label  for="prompt">Saturation</Label>
-                      <Slider  bind:value={saturation}  max={200} step={1}/>
+                      <Slider  bind:value={saturation} min={0} max={200} step={1}/>
                     </div>
                   </Card.Content> 
                 </Card.Root>
@@ -138,9 +204,9 @@
                   <Card.Content>
                     <div class="space-y-2 pt-4 ">
                       <h1 class="font-heading">Resize</h1>
-                      <Button variant="noShadow" class="font-bold" on:click={() => {resize.width = "1024"; resize.height = "1024"; aspectClass = "aspect-[1/1]"; isAspect = false}}>1:1</Button>
-                      <Button variant="noShadow" class="font-bold" on:click={() => {resize.width = "1920"; resize.height = "1080"; aspectClass = "aspect-[16/9]"; isAspect = true}}>16:9</Button>
-                      <Button variant="noShadow" class="font-bold" on:click={() => {resize.width = "1920"; resize.height = "1440"; aspectClass = "aspect-[4/3]"; isAspect = true}}>4:3</Button>
+                      <Button variant="noShadow" class="font-bold" on:click={() => {resize.width = 1024; resize.height = 1024;  isAspect = false}}>1:1</Button>
+                      <Button variant="noShadow" class="font-bold" on:click={() => {resize.width = 1920; resize.height = 1080;  isAspect = true}}>16:9</Button>
+                      <Button variant="noShadow" class="font-bold" on:click={() => {resize.width = 1920; resize.height = 1440;  isAspect = true}}>4:3</Button>
                     </div>
                   </Card.Content> 
                 </Card.Root>

@@ -21,7 +21,7 @@
 	export let shadowVisible: boolean = true;
 	export let isAspect: boolean = false;
 	export let previewFilter: string = "";
-	export let aspectClass: string = "";
+	export let aspectClass: string = "aspect-[4/3]";
 
 	
 
@@ -34,7 +34,7 @@
 
 <figure
 	class={cn(
-		"w-full h-full overflow-hidden rounded-base border-2 border-border bg-main font-base  flex flex-col",
+		"w-full h-full  overflow-hidden rounded-base border-2 border-border bg-main font-base  flex flex-col",
 		shadowVisible ? "shadow-shadow" : "",
 		className
 	)}

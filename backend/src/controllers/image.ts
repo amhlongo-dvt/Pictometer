@@ -169,7 +169,8 @@ export function createImageApp(
                 sharpImage = sharpImage.resize({
                     width: transformations.resize.width,
                     height: transformations.resize.height,
-                    fit: "cover"
+                    fit: "cover",
+                    withoutReduction: true
                 });
             }
             
@@ -182,18 +183,19 @@ export function createImageApp(
                 });
             }
             
-            if (transformations.rotate !== undefined) {
-                sharpImage = sharpImage.rotate(transformations.rotate, {
+            if (transformations.rotation !== undefined) {
+
+                sharpImage = sharpImage.rotate(transformations.rotation, {
                     background: { r: 0, g: 0, b: 0, alpha: 0 }
                 });
             }
 
             if (transformations.flipHorizontal) {
-                sharpImage = sharpImage.flip();
+                sharpImage = sharpImage.flop();
             }
             
             if (transformations.flipVertical) {
-                sharpImage = sharpImage.flop();
+                sharpImage = sharpImage.flip();
             }
 
             if (transformations.contrast !== undefined) {
@@ -255,12 +257,17 @@ export function createImageApp(
                 size: processedBuffer.length
             };
             
-            const newImage = await imageResource.create(newImageMetadata);
-            
+            // const newImage = await imageResource.create(newImageMetadata);
+            const response = client.file(newImageMetadata.s3key)
+          
             return c.json({
                 success: true,
                 originalImageId: imageId,
-                newImageId: newImage.id,
+                imageUrl: response.presign({
+                    expiresIn: 7 * 24 * 60 * 60, // 7 days
+                    acl: "public-read"
+                }),
+                newImageId: "",
                 transformations: Object.keys(transformations).length
             });
             
@@ -285,7 +292,7 @@ interface ImageTransformations {
         x: number;
         y: number;
     };
-    rotate?: number;
+    rotation?: number;
     format?: string;
     filters?: {
         grayscale?: boolean;
