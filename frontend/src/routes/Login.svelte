@@ -105,7 +105,7 @@
                 </Button>
                 
                 <CardDescription class="mt-4 text-center text-sm">
-                    Don't have an account? <a href="/register" class="text-bw hover:underline">Sign up</a>
+                    Don't have an account? <button on:click={() => navigate("/register")} class="text-bw hover:underline">Sign up</button>
                 </CardDescription>
             </form>
         </Card>

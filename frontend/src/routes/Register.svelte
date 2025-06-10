@@ -118,7 +118,7 @@
                 </Button>
                 
                 <CardDescription class="mt-4 text-center text-sm">
-                    Already have an account? <a href="/login" class="text-bw hover:underline">Log in</a>
+                    Already have an account? <button on:click={() => navigate("/login")} class="text-bw hover:underline">Log in</button>
                 </CardDescription>
             </form>
         </Card>
