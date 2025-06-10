@@ -24,6 +24,29 @@ export interface CreateImageResponse {
     metadata: Image;
 }
 
+export interface ImageTransformations {
+    resize?: {
+        width: number;
+        height: number;
+    };
+    crop?: {
+        width: number;
+        height: number;
+        x: number;
+        y: number;
+    };
+    rotate?: number;
+    format?: string;
+    filters?: {
+        grayscale?: boolean;
+        sepia?: boolean;
+    };
+    flipHorizontal?: boolean;
+    flipVertical?: boolean;
+    contrast?: number;
+    brightness?: number;
+    saturation?: number;
+}
 /**
  * Get a list of all images
  */
@@ -54,5 +77,10 @@ export async function getImage(imageId: string): Promise<ImageResponse> {
 
 export async function generateImage(url: string): Promise<ImageResponse> {
     const response = await axios.post(`${API_HOST}/api/v1/image/generate`, { url });
+    return response.data;
+}
+
+export async function editImage(imageId: string, transformations: ImageTransformations): Promise<ImageResponse> {
+    const response = await axios.post(`${API_HOST}/api/v1/image/${imageId}/edit`, { transformations });
     return response.data;
 }

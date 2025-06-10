@@ -187,6 +187,28 @@ export function createImageApp(
                     background: { r: 0, g: 0, b: 0, alpha: 0 }
                 });
             }
+
+            if (transformations.flipHorizontal) {
+                sharpImage = sharpImage.flip();
+            }
+            
+            if (transformations.flipVertical) {
+                sharpImage = sharpImage.flop();
+            }
+
+            if (transformations.contrast !== undefined) {
+                const a = transformations.contrast;
+                const b = (1 - transformations.contrast) * 128; 
+                sharpImage = sharpImage.linear(a, b);
+            }
+            
+            if (transformations.brightness !== undefined) {
+                sharpImage = sharpImage.modulate({ brightness: transformations.brightness });
+            }
+            
+            if (transformations.saturation !== undefined) {
+                sharpImage = sharpImage.modulate({ saturation: transformations.saturation });
+            }
             
             if (transformations.filters) {
                 if (transformations.filters.grayscale) {
@@ -199,6 +221,7 @@ export function createImageApp(
                         .tint({ r: 240, g: 200, b: 160 });
                 }
             }
+
             
             if (transformations.format) {
                 const format = transformations.format.toLowerCase();
@@ -211,6 +234,8 @@ export function createImageApp(
                     }
                 }
             }
+          
+
             
             const processedBuffer = await sharpImage.toBuffer();
             
@@ -266,4 +291,10 @@ interface ImageTransformations {
         grayscale?: boolean;
         sepia?: boolean;
     };
+    flipHorizontal?: boolean;
+    flipVertical?: boolean;
+    contrast?: number;
+    brightness?: number;
+    saturation?: number;
+
 }
