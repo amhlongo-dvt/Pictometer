@@ -23,7 +23,7 @@ export async function  generateEditMessageResponse(message:DBCreateMessage, imag
 :Promise<string>
 {
     const params = {
-        model: "black-forest-labs/FLUX.1-depth",
+        model: "black-forest-labs/FLUX.1-redux",
         steps: 3,
         n: 1,
     }

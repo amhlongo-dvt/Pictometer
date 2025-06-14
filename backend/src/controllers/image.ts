@@ -19,7 +19,8 @@ const client = new S3Client({
   accessKeyId: "minioadmin",
   secretAccessKey: "minioadmin",
   bucket: "images",
-  endpoint: "http://localhost:9000",
+  endpoint: "https://tolerant-pony-optionally.ngrok-free.app",
+
 });
 
 const MAX_FILE_SIZE = 5 * 1024 * 1024;
