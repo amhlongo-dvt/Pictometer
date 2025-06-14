@@ -12,7 +12,7 @@
     import Textarea from "$lib/components/ui/textarea/textarea.svelte";
     import { Undo2, Redo2, X, RotateCw, RotateCcw, FlipHorizontal, FlipVertical, Save } from "lucide-svelte";
     import { getImage, editImage, type ImageTransformations, generateImage } from "../services/imageService";
-  import { getChatMessages, sendMessageWithImage } from "../services/chatService";
+  import { getChatMessages, sendMessage, sendMessageWithImage } from "../services/chatService";
         
     onMount(async () => {
         if (!$authToken){
@@ -23,6 +23,7 @@
         console.log(image)
     });
     export let imageId:string;  
+    export let chatId:string
 
     let image;
     let imageUrl:string = "";
@@ -136,14 +137,16 @@
     }
   }
 
-  async function generateImageFromPrompt(message: string){
-        await sendMessageWithImage("0", message, imageUrl)
-        const response = await getChatMessages("0");
-        imageUrl = response.chats[response.chats.length - 1].message;
-        const response2 = await generateImage(imageUrl)
+  async function editImageFromPrompt(message: string){
+        const response2 = await generateImage(message,imageUrl)
         imageId = response2.imageId;
         imageUrl = response2.imageUrl
-    }
+  }
+
+  async function saveImage() {
+    await sendMessage(chatId, imageUrl, imageId)
+    navigate(`/${chatId}`)
+  }
 </script>
 <!-- USE THIS IMAGE URL -->
 <div class="flex flex-col h-screen">
@@ -176,7 +179,7 @@
                   <X strokeWidth="2.5"/> Clear
                 </Button>
               </div>
-              <Button variant="noShadow"><Save stroke-width="2.5"/>Save</Button>
+              <Button variant="noShadow" on:click={saveImage}><Save stroke-width="2.5"/>Save</Button>
             </div>
           </ImageCard>
           <div class="bg-main border-border  p-4 rounded-base border-2 shadow-shadow flex flex-col gap-2 h-full overflow-y-auto scrollbar">
@@ -191,7 +194,7 @@
                     </div>
                   </Card.Content> 
                   <Card.Footer>
-                    <Button on:click={() => {generateImageFromPrompt(message)}}>Generate</Button>
+                    <Button on:click={() => {editImageFromPrompt(message)}}>Generate</Button>
                   </Card.Footer>
                 </Card.Root>
                 

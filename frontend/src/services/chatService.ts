@@ -50,8 +50,8 @@ export async function getChatMessages(chatId: string): Promise<ChatMessageRespon
 /**
  * Send a message to a specific chat
  */
-export async function sendMessage(chatId: string, message: string): Promise<void> {
-    await axios.post(`${API_HOST}/api/v1/chat/${chatId}/message/`, { message });
+export async function sendMessage(chatId: string, imageUrl: string, imageId: string): Promise<void> {
+    await axios.post(`${API_HOST}/api/v1/chat/${chatId}/message/`, { imageUrl,imageId });
 }
 
 /**

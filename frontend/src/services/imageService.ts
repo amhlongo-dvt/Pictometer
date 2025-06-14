@@ -75,8 +75,8 @@ export async function getImage(imageId: string): Promise<ImageResponse> {
     return response.data;
 }
 
-export async function generateImage(url: string): Promise<ImageResponse> {
-    const response = await axios.post(`${API_HOST}/api/v1/image/generate`, { url });
+export async function generateImage(message:string ,url?: string ): Promise<ImageResponse> {
+    const response = await axios.post(`${API_HOST}/api/v1/image/generate`, { url, message });
     return response.data;
 }
 
