@@ -7,8 +7,10 @@ export interface Chat {
 }
 
 export interface Message {
-    message: string;
-    createdAt: number;
+    imageId: string, 
+    imageUrl: string, 
+    chatId:string, 
+    id:string
 }
 
 export interface ChatListResponse {

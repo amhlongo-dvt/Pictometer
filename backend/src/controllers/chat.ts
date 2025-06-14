@@ -9,7 +9,6 @@ import type {
 import type { IDatabaseResource } from "../storage/types";
 import { z } from "zod";
 import { zValidator } from "@hono/zod-validator";
-import { generateEditMessageResponse, generateMessageResponse } from "../integrations/generate_message";
 
 const idSchema = z.object({
     id: z.string().min(1),

@@ -25,8 +25,8 @@ export async function  generateEditMessageResponse(message:string, imageUrl:Stri
 :Promise<string>
 {
     const params = {
-        model: "black-forest-labs/FLUX.1-redux",
-        steps: 3,
+        model: "black-forest-labs/FLUX.1-canny",
+        steps: 20,
         n: 1,
     }
 

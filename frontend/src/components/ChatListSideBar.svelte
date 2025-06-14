@@ -64,11 +64,11 @@
     {#if chats.length === 0}
 
         <div class="text-center p-4">
-            No chats available. Create a new one!
+            No albums available. Create a new one!
         </div>
     {/if}
 
-    <Button variant="noShadow" class="w-full rounded-none border-b-4  border-l-0  border-r-0" on:click={createNewChat}>New Chat</Button>
+    <Button variant="noShadow" class="w-full rounded-none border-b-4  border-l-0  border-r-0" on:click={createNewChat}>New Album</Button>
     <ul>
         {#each chats as chat (chat.id)}
             <button 

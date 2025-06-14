@@ -12,6 +12,7 @@ export interface ImageResponse {
     imageId: string;
     imageUrl: string;
     metadata: Image;
+    createdAt: Image;
     success: boolean;
 }
 

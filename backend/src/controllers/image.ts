@@ -106,7 +106,8 @@ export function createImageApp(
                 expiresIn: 7 * 24 * 60 * 60, // 7 days
                 acl: "public-read"
             }),
-            metadata: imageMetadata
+            metadata: imageMetadata,
+            createdAt: imageRes.createdAt
         })
     })
 

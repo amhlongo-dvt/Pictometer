@@ -52,7 +52,7 @@
 		alt={caption} 
 	/>
 	{#if isCaptionVisible}
-	<figcaption class="border-t-2 text-mtext border-border p-4 flex-shrink-0">
+	<figcaption class="border-t-2 text-sm border-border p-4 flex-shrink-0 line-clamp-1 ">
 		{caption}
 	</figcaption>
 {/if}

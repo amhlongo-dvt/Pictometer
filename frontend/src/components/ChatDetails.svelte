@@ -1,49 +1,46 @@
 <script lang="ts">
     import {onMount} from "svelte"
-    import axios from "axios";
     import "../styles/chatDetails.css"
-    import { getChatMessages, sendMessage as sendChatMessage } from "../services/chatService"
+    import { getChatMessages, sendMessage as sendChatMessage, type Message } from "../services/chatService"
     import ImageCard from "../lib/components/ui/image-card/image-card.svelte";
     import {Button} from "../lib/components/ui/button"
     import * as Sheet from "$lib/components/ui/sheet";
-  import * as Card from "$lib/components/ui/card";
-  import { Slider } from "$lib/components/ui/slider";
-  import { Label } from "$lib/components/ui/label";
+    import * as Card from "$lib/components/ui/card";
+    import { Label } from "$lib/components/ui/label";
+  import { navigate } from "svelte-routing";
 
     export let chatId: string;
 
-    let messages: {message: string, createdAt: number}[] = [];
+    let images: Message[] = [];
     let newMessage = "";
     let errorMessage: string | null = null;
     let isLoading = false;
     let isOpen = false;
 
+    let imageName:string;
+    let imageDate: Date;
+    let imageSize:string = "1.9Mb"
+    let imageId:string;
+    let imageUrl:string;
     onMount(async () => {
         await loadMessages()
     })
+
     async function loadMessages() {
         try {
             const response = await getChatMessages(chatId);
-            messages = response.chats;
+            images = response.chats
         } catch (error) {
             errorMessage = "Failed to get chat details. Please try again later";
             console.error('Error fetching messages', error)
         } 
     }
 
-    async function sendMessage() {
-        isLoading = true;
-        try {
-            await sendChatMessage(chatId, newMessage);
-            messages = [...messages, {message: newMessage, createdAt: Date.now()}];
-            newMessage = "";
-            await loadMessages()
-        } catch (error) {
-            errorMessage = "Failed to send message. Please try again later";
-            console.error('Error sending message', error)
-        } finally {
-            isLoading = false;
-        }
+
+
+    async function openSheet(imageId:string){
+        isOpen = true
+        console.log(imageId)
     }
 
     $: {
@@ -53,14 +50,13 @@
     }
 </script>
 <div class="col-span-3 overflow-y-auto scrollbar">
-    <Button variant="noShadow" class="w-full rounded-none border-b-4  border-l-0  border-r-0">New Chat</Button>
+    <Button variant="noShadow" class="w-full rounded-none border-b-4  border-l-0  border-r-0" on:click={()=>{navigate(`/create/${chatId}`)}}>New Image</Button>
     <div class="grid grid-cols-2 md:grid-cols-4 gap-4 col-span-3  p-4"> 
-        <button class="aspect-w-1 aspect-h-1 transition-all" on:click={() => sendMessage()}>
-            <ImageCard class="w-full h-auto object-cover rounded text-left hover:translate-x-boxShadowX hover:translate-y-boxShadowY hover:shadow-none" imageUrl="" caption="Hello" isAspect={true} />
-        </button>
-        <button class="aspect-w-1 aspect-h-1" on:click={() => (isOpen = true)}>
-            <ImageCard class="w-full h-auto object-cover rounded text-left" imageUrl="" caption="Hello" isAspect={true} />
-        </button>
+        {#each images as image}
+            <button class="aspect-w-1 aspect-h-1 transition-all" on:click={()=>{openSheet(image.imageId)}}>
+                <ImageCard class="w-full h-auto object-cover rounded text-left hover:translate-x-boxShadowX hover:translate-y-boxShadowY hover:shadow-none" imageUrl={image.imageUrl} caption={image.imageUrl} isAspect={true} />
+            </button>
+        {/each}
     </div>
     <Sheet.Root bind:open={isOpen}>
         
