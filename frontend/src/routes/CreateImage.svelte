@@ -18,19 +18,23 @@
           navigate("/register")
         }
     });
+    export let chatId:string;
     let message = ""
     let imageUrl = ""
     let file: File | null = null;
     let isGenerated = false;
     let imageId: string;
+    let fileName:string = "";
     const reader = new FileReader();
 
     async function generateImageFromPrompt(message: string){
-        await sendMessage("0", message)
-        const response = await getChatMessages("0");
-        imageUrl = response.chats[response.chats.length - 1].message;
-        const response2 = await generateImage(imageUrl)
+        
+        // const response = await getChatMessages("0");
+        
+        const response2 = await generateImage(message)
         imageId = response2.imageId;
+        imageUrl = response2.imageUrl
+        fileName = response2.metadata.filename
         isGenerated = true;
         
     }
@@ -44,6 +48,7 @@
                 imageUrl = result;
             };
             reader.readAsDataURL(file);
+            fileName  = file.name
         }
     }
 
@@ -52,11 +57,12 @@
         const response = await createImage(file);
         imageId = response.imageId;
       }
-      navigate(`/edit/${imageId}`);
+      navigate(`/edit/${chatId}/${imageId}`);
     }
 
     function clearImage(){
         imageUrl = ""
+        imageId = ""
         reader.abort();
         file = null;
     }
@@ -73,7 +79,7 @@
           <ImageCard
             class="col-span-3 w-full"
             imageUrl={imageUrl}
-            caption={file? `${file?.name}` : ""}
+            caption={fileName? `${fileName}` : ""}
           />
     
          

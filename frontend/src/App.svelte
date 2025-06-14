@@ -17,8 +17,10 @@
 <Route path="/:id" let:params>
     <Chat chatId={params.id}/>
   </Route>
-  <Route path="/create" component={CreateImage}/>
-  <Route path="/edit/:imageId" let:params>
-    <EditImage imageId={params.imageId}/>
+  <Route path="/create/:chatId" let:params>
+    <CreateImage chatId={params.chatId}/>
+  </Route>
+  <Route path="/edit/:chatId/:imageId" let:params>
+    <EditImage imageId={params.imageId} chatId={params.chatId}/>
   </Route>
 </Router>
