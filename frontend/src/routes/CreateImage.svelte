@@ -9,57 +9,57 @@
     import { Button } from "$lib/components/ui/button/index.js";
     import { Input } from "$lib/components/ui/input/index.js";
     import { Label } from "$lib/components/ui/label/index.js";
-  import Textarea from "$lib/components/ui/textarea/textarea.svelte";
-  import {getChatMessages, sendMessage} from "../services/chatService"
-  import { createImage, generateImage } from "../services/imageService";
-  import axios from "axios";
-  onMount(() => {
-        if (!$authToken){
-            navigate("/register")
-          }
-        });
-        let message = ""
-        let imageUrl = ""
-        let file: File | null = null;
-        let isGenerated = false;
-        let imageId: string;
-        const reader = new FileReader();
+    import Textarea from "$lib/components/ui/textarea/textarea.svelte";
+    import {getChatMessages, sendMessage} from "../services/chatService"
+    import { createImage, generateImage } from "../services/imageService";
 
-        async function generateImageFromPrompt(message: string){
-            await sendMessage("0", message)
-            const response = await getChatMessages("0");
-            imageUrl = response.chats[response.chats.length - 1].message;
-            const response2 = await generateImage(imageUrl)
-            imageId = response2.imageId;
-            isGenerated = true;
-            
+    onMount(() => {
+      if (!$authToken){
+          navigate("/register")
         }
+    });
+    let message = ""
+    let imageUrl = ""
+    let file: File | null = null;
+    let isGenerated = false;
+    let imageId: string;
+    const reader = new FileReader();
 
-        function handleFileChange(event: Event) {
-            const target = event.target as HTMLInputElement;
-            file = target.files![0];
-            if (file) {
-                reader.onload = (e) => {
-                    const result = e.target?.result as string;
-                    imageUrl = result;
-                };
-                reader.readAsDataURL(file);
-            }
-        }
+    async function generateImageFromPrompt(message: string){
+        await sendMessage("0", message)
+        const response = await getChatMessages("0");
+        imageUrl = response.chats[response.chats.length - 1].message;
+        const response2 = await generateImage(imageUrl)
+        imageId = response2.imageId;
+        isGenerated = true;
+        
+    }
 
-        async function createImageFile(){
-          if(!isGenerated && file){
-            const response = await createImage(file);
-            imageId = response.imageId;
-          }
-          navigate(`/edit/${imageId}`);
+    function handleFileChange(event: Event) {
+        const target = event.target as HTMLInputElement;
+        file = target.files![0];
+        if (file) {
+            reader.onload = (e) => {
+                const result = e.target?.result as string;
+                imageUrl = result;
+            };
+            reader.readAsDataURL(file);
         }
+    }
 
-        function clearImage(){
-            imageUrl = ""
-            reader.abort();
-            file = null;
-        }
+    async function createImageFile(){
+      if(!isGenerated && file){
+        const response = await createImage(file);
+        imageId = response.imageId;
+      }
+      navigate(`/edit/${imageId}`);
+    }
+
+    function clearImage(){
+        imageUrl = ""
+        reader.abort();
+        file = null;
+    }
 </script>
 
 <div class="flex flex-col h-screen">
