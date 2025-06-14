@@ -20,8 +20,8 @@ const chatSchema = z.object({
 })
 
 const messageSchema = z.object({
-    message: z.string().min(1),
-    imageUrl: z.string().optional()
+    imageUrl: z.string(),
+    imageId: z.string()
 })
 
 export const CHAT_PREFIX = "/chat/";
@@ -70,24 +70,10 @@ export function createChatApp(
 
     chatApp.post(CHAT_MESSAGE_ROUTE, zValidator("param", idSchema), zValidator("json", messageSchema), async (c) => {
         const {id: chatId} = c.req.valid("param")
-        const {message, imageUrl} = c.req.valid("json")
-        const userMessage: DBCreateMessage = {message, chatId, type:"user"}
-        await messageResource.create(userMessage);
-        const allMessages = await messageResource.findAll({chatId});
-        let response
-        if(imageUrl){
-            response = await generateEditMessageResponse(userMessage, imageUrl);
-        }else{
-            response = await generateMessageResponse(userMessage);
-        }
-        const responseMessage: DBCreateMessage = {
-            message: response,
-            chatId,
-            type: "system",
-        };
-
-        const data = await messageResource.create(responseMessage);
-
+        const {imageUrl, imageId} = c.req.valid("json")
+        const userMessage: DBCreateMessage = {imageUrl, chatId, imageId}
+    
+        const data = await messageResource.create(userMessage);
         c.get("cache").clearPath(c.req.path);
         return c.json({data});
     });

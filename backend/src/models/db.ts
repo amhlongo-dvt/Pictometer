@@ -23,8 +23,8 @@ export interface DBChat extends DBEntity {
 
 export interface DBMessage extends DBEntity {
     chatId: DBChat['id'];
-    type: MessageType;
-    message: string;
+    imageId: DBImage['id'];
+    imageUrl: string;
 }
 
 export interface DBImage extends DBEntity{
@@ -39,6 +39,6 @@ export type DBCreateUser = Pick<DBUser, 'name' | 'email' | 'password'>;
 
 export type DBCreateChat = Pick<DBChat, 'ownerId' | 'name'>;
 
-export type DBCreateMessage = Pick<DBMessage, 'chatId' | 'type' | 'message'>;
+export type DBCreateMessage = Pick<DBMessage, 'chatId' | 'imageId' | 'imageUrl'>;
 
 export type DBCreateImage = Pick<DBImage, 'ownerId'  | 'contentType' | 'filename' | 's3key' | 'size'>

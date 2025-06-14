@@ -14,6 +14,7 @@ export const IMAGE_ID_EDIT_ROUTE = "/:imageId/edit";
 
 import { file, randomUUIDv7, S3Client } from "bun";
 import sharp from "sharp";
+import { generateEditMessageResponse, generateMessageResponse } from "../integrations/generate_message";
 
 const client = new S3Client({
   accessKeyId: "minioadmin",
@@ -73,16 +74,23 @@ export function createImageApp(
     imageApp.post(IMAGE_ROUTE_GENERATE, async (c) => {
         const userId = c.get("userId");
         
-        const {url} = await c.req.json<{ url: string }>();
+        const {url, message} = await c.req.json<{ url?: string, message:string }>();
+        
+        let imageUrl
+        if(url){
+            imageUrl = await generateEditMessageResponse(message, url);
+        }else{
+            imageUrl = await generateMessageResponse(message);
+        }
         
         const imageId = randomUUIDv7();
         const s3key = `${userId}/${imageId}-generated-image.jpg`;
-        const res = await fetch(url);
+        const res = await fetch(imageUrl);
 
         const imageMetadata:DBCreateImage = {
             ownerId: userId, 
             contentType: "image/jpeg", 
-            filename: "generated-image.jpg", 
+            filename: s3key, 
             s3key, 
             size: 300
         }

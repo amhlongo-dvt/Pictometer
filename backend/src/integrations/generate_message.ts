@@ -1,7 +1,7 @@
 import type {DBCreateMessage, DBMessage} from "../models/db"
 import {getGPTAnswer} from "./gpt"
 
-export async function generateMessageResponse(message:DBCreateMessage)
+export async function generateMessageResponse(message:string)
 :Promise<string>
 {
     const params = {
@@ -12,14 +12,16 @@ export async function generateMessageResponse(message:DBCreateMessage)
 
     const data = {
         ...params,
-        prompt: message.message
+        prompt: message
     }
 
+
+    console.log(data)
     return await getGPTAnswer(data);
     
 }
 
-export async function  generateEditMessageResponse(message:DBCreateMessage, imageUrl:String)
+export async function  generateEditMessageResponse(message:string, imageUrl:String)
 :Promise<string>
 {
     const params = {
@@ -30,7 +32,7 @@ export async function  generateEditMessageResponse(message:DBCreateMessage, imag
 
     const data = {
         ...params,
-        prompt: message.message,
+        prompt: message,
         image_url: imageUrl
     }
 
