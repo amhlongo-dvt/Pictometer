@@ -62,3 +62,10 @@ export async function sendMessage(chatId: string, imageUrl: string, imageId: str
 export async function sendMessageWithImage(chatId: string, message: string, imageUrl: string): Promise<void> {
     await axios.post(`${API_HOST}/api/v1/chat/${chatId}/message/`, { message, imageUrl });
 }
+
+/**
+ * Delete a message to a specific chat
+ */
+export async function deleteMessage(id:string): Promise<void> {
+    await axios.delete(`${API_HOST}/api/v1/chat/message/${id}`);
+}

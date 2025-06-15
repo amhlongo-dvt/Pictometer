@@ -1,15 +1,15 @@
 <script lang="ts">
     import {onMount} from "svelte"
     import "../styles/chatDetails.css"
-    import { getChatMessages, sendMessage as sendChatMessage, type Message } from "../services/chatService"
+    import { deleteMessage, getChatMessages, sendMessage as sendChatMessage, type Message } from "../services/chatService"
     import ImageCard from "../lib/components/ui/image-card/image-card.svelte";
     import {Button} from "../lib/components/ui/button"
     import * as Sheet from "$lib/components/ui/sheet";
     import * as Card from "$lib/components/ui/card";
     import { Label } from "$lib/components/ui/label";
-  import { navigate } from "svelte-routing";
-  import { getImage } from "../services/imageService";
-  import { API_HOST } from "../constants";
+    import { navigate } from "svelte-routing";
+    import { getImage } from "../services/imageService";
+    import { API_HOST } from "../constants";
 
     export let chatId: string;
 
@@ -24,6 +24,7 @@
     let imageSize:string = "1.9Mb"
     let imageUrl:string = "";
     let imageId:string = "";
+    let messageId:string = "";
     onMount(async () => {
         await loadMessages()
     })
@@ -40,33 +41,29 @@
 
 
 
-    async function openSheet(imageIdArg:string){
+    async function openSheet(imageIdArg:string, id: string){
         isOpen = true
         console.log(imageIdArg)
         const res = await getImage(imageIdArg)
         imageName = res.metadata.filename
         imageDate = new Date(res.createdAt)
         console.log(res.createdAt);
+        messageId = id;
         
         imageUrl = res.imageUrl
         
         imageSize = `${(res.metadata.size/1024).toFixed(2)} Kb`
         imageId = res.imageId
     }
+    async function deleteImage(id:string){
+       await deleteMessage(id)
+       isOpen=false
+       navigate(`/${chatId}`)
+       loadMessages()
+    //    location.reload()
+    } 
 
-    async function downloadFIle(){
-
-       
-        const link = document.createElement('a')
-        link.href = '/download/photo.png'
-        link.download = 'photo.png'
-        link.style.display = 'none'
-        
-        // Trigger download
-        document.body.appendChild(link)
-        link.click()
-        document.body.removeChild(link)
-    }
+    
 
     $: {
         if (chatId) {
@@ -78,14 +75,14 @@
     <Button variant="noShadow" class="w-full rounded-none border-b-4  border-l-0  border-r-0" on:click={()=>{navigate(`/create/${chatId}`)}}>New Image</Button>
     <div class="grid grid-cols-2 md:grid-cols-4 gap-4 col-span-3  p-4"> 
         {#each images as image}
-            <button class="aspect-w-1 aspect-h-1 transition-all" on:click={()=>{openSheet(image.imageId)}}>
+            <button class="aspect-w-1 aspect-h-1 transition-all" on:click={()=>{openSheet(image.imageId, image.id)}}>
                 <ImageCard class="w-full h-auto object-cover rounded text-left hover:translate-x-boxShadowX hover:translate-y-boxShadowY hover:shadow-none" imageUrl={image.imageUrl} caption={image.imageUrl} isAspect={true} />
             </button>
         {/each}
     </div>
     <Sheet.Root bind:open={isOpen}>
         
-        <Sheet.Content class="space-y-2 ">
+        <Sheet.Content class="space-y-2 overflow-y-auto scrollbar">
             <ImageCard class="w-full h-auto object-cover rounded text-left shadow-none mt-6" imageUrl={imageUrl} caption="Hello" isCaptionVisible={false} shadowVisible={false} />
                 
             
@@ -109,7 +106,7 @@
                         <a href={`${API_HOST}/api/v1/image/download/${imageId}`}>
                             <Button class="w-full">Download</Button>
                         </a>
-                        <Button class="w-full" variant="neutral" >Delete</Button>
+                        <Button class="w-full" variant="neutral" on:click={() => {deleteImage(messageId)}}>Delete</Button>
                         
                     </div>
             

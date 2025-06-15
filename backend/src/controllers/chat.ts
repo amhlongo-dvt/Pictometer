@@ -27,6 +27,7 @@ export const CHAT_PREFIX = "/chat/";
 export const CHAT_ROUTE = "";
 export const CHAT_DETAIL_ROUTE = ":id";
 export const CHAT_MESSAGE_ROUTE = ":id/message/";
+export const CHAT_MESSAGE_ROUTE_ID = "message/:id";
 
 export function createChatApp(
     chatResource: IDatabaseResource<DBChat, DBCreateChat>,
@@ -73,6 +74,13 @@ export function createChatApp(
         const userMessage: DBCreateMessage = {imageUrl, chatId, imageId}
     
         const data = await messageResource.create(userMessage);
+        c.get("cache").clearPath(c.req.path);
+        return c.json({data});
+    });
+
+    chatApp.delete(CHAT_MESSAGE_ROUTE_ID, zValidator("param", idSchema), async (c) => {
+        const {id} = c.req.valid("param")
+        const data = await messageResource.delete(id);
         c.get("cache").clearPath(c.req.path);
         return c.json({data});
     });
