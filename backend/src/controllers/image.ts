@@ -9,6 +9,7 @@ import type { IDatabaseResource } from "../storage/types";
 export const IMAGE_PREFIX = "/image/";
 export const IMAGE_ROUTE = "";
 export const IMAGE_ROUTE_GENERATE = "generate";
+export const IMAGE_ROUTE_DOWNLOAD = "download/:imageId";
 export const IMAGE_ID_ROUTE = "/:imageId";
 export const IMAGE_ID_EDIT_ROUTE = "/:imageId/edit";
 
@@ -98,6 +99,7 @@ export function createImageApp(
         const imageRes = await imageResource.create(imageMetadata)
         
         await client.write(s3key, res)
+        console.log(imageRes);
 
         return c.json({
             success: true,
@@ -109,6 +111,8 @@ export function createImageApp(
             metadata: imageMetadata,
             createdAt: imageRes.createdAt
         })
+
+        
     })
 
     imageApp.get(IMAGE_ID_ROUTE, async (c) => {
@@ -126,11 +130,13 @@ export function createImageApp(
 
                 return c.json({
                     success: true,
+                    imageId: imageId,
                     imageUrl: response.presign({
                         expiresIn: 7 * 24 * 60 * 60, // 7 days
                         acl: "public-read"
                     }),
-                    metadata: imageMetadata
+                    metadata: imageMetadata,
+                    createdAt: imageMetadata.createdAt
                 })
             } catch (error) {
                 
@@ -148,6 +154,30 @@ export function createImageApp(
         const images = await imageResource.findAll({ownerId: userId})
         return c.json({images})
     })
+
+    imageApp.get(IMAGE_ROUTE_DOWNLOAD, async (c) => {
+        const imageId =  c.req.param("imageId");
+        if(!imageId) {
+            return c.json({error: "URL parameter is required"}, 400)
+        }
+
+        const imageMetadata = await imageResource.get(imageId);
+        
+        if (!imageMetadata) {
+            return c.json({ error: "Image not found" }, 404);
+        }
+        
+        const response = client.file(imageMetadata.s3key)
+        
+
+        const imageBuffer = await response.arrayBuffer()
+
+        c.header('Content-Type', response.type)
+        c.header("Content-Disposition", `attachment; filename=${response.name}`)
+        return c.body(imageBuffer)
+
+    })
+
 
     imageApp.post(IMAGE_ID_EDIT_ROUTE, async (c) => {
         const userId = c.get("userId");
