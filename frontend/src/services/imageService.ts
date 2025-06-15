@@ -12,7 +12,7 @@ export interface ImageResponse {
     imageId: string;
     imageUrl: string;
     metadata: Image;
-    createdAt: Image;
+    createdAt: number;
     success: boolean;
 }
 
@@ -83,5 +83,9 @@ export async function generateImage(message:string ,url?: string ): Promise<Imag
 
 export async function editImage(imageId: string, transformations: ImageTransformations): Promise<ImageResponse> {
     const response = await axios.post(`${API_HOST}/api/v1/image/${imageId}/edit`, { transformations });
+    return response.data;
+}
+export async function downloadImage(imageId: string): Promise<Buffer> {
+    const response = await axios.post(`${API_HOST}/api/v1/image/download/${imageId}`);
     return response.data;
 }
