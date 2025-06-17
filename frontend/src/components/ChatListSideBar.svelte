@@ -28,6 +28,8 @@
 
     let isCreatingNewChat = false;
 
+    $: console.log('count changed:', isCreatingNewChat);
+
     function selectChat(chatId: string) {
         navigate(`/${chatId}`)
     }
@@ -46,6 +48,7 @@
         selectChat(chatId);
         onClose();
     }
+    
 </script>
 
 
@@ -58,17 +61,18 @@
         <CreateChatPopup
             onCreate={onCreateChat}
             onClose={onClose}
+            isOpen={isCreatingNewChat}
         />
     {/if}
 
     {#if chats.length === 0}
 
         <div class="text-center p-4">
-            No albums available. Create a new one!
+            No collections available. Create a new one!
         </div>
     {/if}
 
-    <Button variant="noShadow" class="w-full rounded-none border-b-4  border-l-0  border-r-0" on:click={createNewChat}>New Album</Button>
+    <Button variant="noShadow" class="w-full rounded-none border-b-4  border-l-0  border-r-0" on:click={() => (isCreatingNewChat = true)}>New Collection</Button>
     <ul>
         {#each chats as chat (chat.id)}
             <button 

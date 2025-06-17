@@ -5,7 +5,6 @@
     import DarkMode from "../lib/components/ui/dark-mode/toggle.svelte"
     import * as Avatar from "$lib/components/ui/avatar";
     import * as DropdownMenu from "$lib/components/ui/dropdown-menu/index.js";
-    import { Button } from "$lib/components/ui/button/index.js";
     const name = authToken.getPayload()?.name || "User"
     export let chatId
     function logout() {
@@ -24,7 +23,7 @@
                 role="button"
                 on:click={() => {navigate(`/${chatId}`)}}
                 on:keydown={(e) => (e.key === 'Enter' || e.key === ' ')}
-
+                href={undefined}
             >
                 P
             </a>        
