@@ -7,7 +7,7 @@
     import * as DropdownMenu from "$lib/components/ui/dropdown-menu/index.js";
     import { Button } from "$lib/components/ui/button/index.js";
     const name = authToken.getPayload()?.name || "User"
-   
+    export let chatId
     function logout() {
         authToken.remove()
         navigate("/login")
@@ -22,9 +22,9 @@
                 class="text-[30px] h-11 w-11 rounded-base flex bg-main text-text border-2 border-black m500:w-9 m500:h-9 m500:text-[22px] items-center justify-center font-heading" 
                 tabindex="0"
                 role="button"
-                on:click={() => {navigate("/")}}
+                on:click={() => {navigate(`/${chatId}`)}}
                 on:keydown={(e) => (e.key === 'Enter' || e.key === ' ')}
-                href={undefined}
+
             >
                 P
             </a>        
