@@ -16,10 +16,10 @@
     });
 </script>
 
-<div>
+<div class="h-[calc(100vh-88px)]">
     <Header></Header>
     <!-- make this div a grid with 2 columns and the make the div not scrollable-->
-    <div class="grid grid-cols-4 h-[calc(100vh-6vh)]">
+    <div class="grid grid-cols-4 h-full ">
        
         <ChatListSideBar chatId={chatId}/>
         

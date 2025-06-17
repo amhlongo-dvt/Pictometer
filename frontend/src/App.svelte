@@ -6,8 +6,10 @@
   import Chat from './routes/Chat.svelte';
   import CreateImage from "./routes/CreateImage.svelte";
   import EditImage from "./routes/EditImage.svelte";
+  import { ModeWatcher } from "mode-watcher";
 </script>
 
+<ModeWatcher />
 <Router>
   <Route path="/register" component={Register}/>
   <Route path="/login" component={Login}/>
