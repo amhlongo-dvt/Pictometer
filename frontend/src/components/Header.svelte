@@ -3,6 +3,7 @@
     import "../styles/header.css"
     import {authToken} from '../stores/auth'
     import Button from "../lib/components/ui/dark-mode/toggle.svelte"
+    import * as Avatar from "$lib/components/ui/avatar";
     const name = authToken.getPayload()?.name || "User"
    
     function logout() {
@@ -35,6 +36,11 @@
     </div>
     <div class="flex items-center gap-5 m1000:gap-5">
         
+        
+                <Avatar.Root>
+                    <Avatar.Image src="https://github.com/shadcn.png" alt="@shadcn" />
+                    <Avatar.Fallback>{name[0]}</Avatar.Fallback>
+                </Avatar.Root>
         <div class="flex items-center justify-end gap-5 m800:w-[unset] m400:gap-3">
             
             <Button/>
