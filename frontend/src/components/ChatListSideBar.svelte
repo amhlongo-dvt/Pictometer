@@ -49,7 +49,7 @@
 </script>
 
 
-<aside class="scrollbar bg-white dark:bg-secondaryBlack h-full col-span-1 overflow-y-auto border-r-4 border-border dark:border-darkNavBorder">
+<aside class="scrollbar bg-white dark:bg-secondaryBlack h-full col-span-1 overflow-y-auto overflow-x-hidden border-r-4 border-border dark:border-darkNavBorder">
     {#if errorMessage}
         <div class="error">{errorMessage}</div>
     {/if}
