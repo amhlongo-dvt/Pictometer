@@ -1,5 +1,6 @@
-import axios from "axios";
-import { API_HOST } from "../constants";
+// import axios from "axios";
+
+import api from "./api"
 
 export interface Image {
     id: string;
@@ -48,22 +49,17 @@ export interface ImageTransformations {
     brightness?: number;
     saturation?: number;
 }
-/**
- * Get a list of all images
- */
+
 export async function getChatList(): Promise<ImageListResponse> {
-    const response = await axios.get(`${API_HOST}/api/v1/image/`);
+    const response = await api.get(`/api/v1/image/`);
     return response.data;
 }
 
-/**
- * Create a new image
- */
 export async function createImage(file: File): Promise<CreateImageResponse> {
     const formData = new FormData();
     formData.append("file", file);
 
-    const response = await axios.post(`${API_HOST}/api/v1/image/`, formData, {
+    const response = await api.post(`/api/v1/image/`, formData, {
         headers: {
             "Content-Type": "multipart/form-data",
         },
@@ -72,20 +68,20 @@ export async function createImage(file: File): Promise<CreateImageResponse> {
 }
 
 export async function getImage(imageId: string): Promise<ImageResponse> {
-    const response = await axios.get(`${API_HOST}/api/v1/image/${imageId}`);
+    const response = await api.get(`/api/v1/image/${imageId}`);
     return response.data;
 }
 
 export async function generateImage(message:string ,url?: string ): Promise<ImageResponse> {
-    const response = await axios.post(`${API_HOST}/api/v1/image/generate`, { url, message });
+    const response = await api.post(`/api/v1/image/generate`, { url, message });
     return response.data;
 }
 
 export async function editImage(imageId: string, transformations: ImageTransformations): Promise<ImageResponse> {
-    const response = await axios.post(`${API_HOST}/api/v1/image/${imageId}/edit`, { transformations });
+    const response = await api.post(`/api/v1/image/${imageId}/edit`, { transformations });
     return response.data;
 }
 export async function downloadImage(imageId: string): Promise<Buffer> {
-    const response = await axios.post(`${API_HOST}/api/v1/image/download/${imageId}`);
+    const response = await api.post(`/api/v1/image/download/${imageId}`);
     return response.data;
 }

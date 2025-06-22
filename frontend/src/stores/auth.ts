@@ -1,13 +1,15 @@
 import { writable } from "svelte/store";
-import axios from "axios";
 import {jwtDecode} from "jwt-decode";
+import api from "../services/api"
 
 interface TokenPayLoad{
     name: string
 }
 
+
+
 function setAxiosAuth(token: string) {
-    axios.defaults.headers.common["Authorization"] = `Bearer ${token}`
+    api.defaults.headers.common["Authorization"] = `Bearer ${token}`
 }
 
 function createAuthStore() {
@@ -15,6 +17,8 @@ function createAuthStore() {
     if (token) {
         setAxiosAuth(token)
     }
+
+    
 
     const {subscribe, set} = writable<string | null>(token)
 
@@ -26,13 +30,13 @@ function createAuthStore() {
             if (value){
                 setAxiosAuth(value)
             }else{
-                delete axios.defaults.headers.common["Authorization"];
+                delete  api.defaults.headers.common["Authorization"];
             }
         },
         remove: () => {
             localStorage.removeItem("authToken");
             set(null);
-            delete axios.defaults.headers.common["Authorization"];
+            delete  api.defaults.headers.common["Authorization"];
         },
         getPayload: () => {
             const token = localStorage.getItem("authToken");

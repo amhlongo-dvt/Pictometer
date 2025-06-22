@@ -1,5 +1,7 @@
-import axios from "axios";
+// import axios from "axios";
 import { API_HOST } from "../constants";
+import api from "./api"
+
 
 export interface LoginRequest {
     email: string;
@@ -23,7 +25,7 @@ export interface AuthResponse {
  * @returns A promise that resolves to an AuthResponse object containing the user's authentication token.
  */
 export async function login(request: LoginRequest): Promise<AuthResponse> {
-    const response = await axios.post(`${API_HOST}/api/v1/auth/login/`, request);
+    const response = await api.post(`/api/v1/auth/login/`, request);
     return response.data;
 }
 
@@ -35,5 +37,5 @@ export async function login(request: LoginRequest): Promise<AuthResponse> {
  * @returns A promise that resolves when the registration is successful.
  */
 export async function register(request: RegisterRequest): Promise<void> {
-    await axios.post(`${API_HOST}/api/v1/auth/register/`, request);
+    await api.post(`/api/v1/auth/register/`, request);
 }

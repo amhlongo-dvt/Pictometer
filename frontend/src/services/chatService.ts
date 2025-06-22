@@ -1,5 +1,6 @@
-import axios from "axios";
-import { API_HOST } from "../constants";
+// import axios from "axios";
+
+import api from "./api"
 
 export interface Chat {
     id: string;
@@ -29,7 +30,7 @@ export interface CreateChatResponse {
  * Get a list of all chats
  */
 export async function getChatList(): Promise<ChatListResponse> {
-    const response = await axios.get(`${API_HOST}/api/v1/chat/`);
+    const response = await api.get(`/api/v1/chat/`);
     return response.data;
 }
 
@@ -37,7 +38,7 @@ export async function getChatList(): Promise<ChatListResponse> {
  * Create a new chat
  */
 export async function createChat(name: string): Promise<CreateChatResponse> {
-    const response = await axios.post(`${API_HOST}/api/v1/chat/`, { name });
+    const response = await api.post(`/api/v1/chat/`, { name });
     return response.data;
 }
 
@@ -45,7 +46,7 @@ export async function createChat(name: string): Promise<CreateChatResponse> {
  * Get messages for a specific chat
  */
 export async function getChatMessages(chatId: string): Promise<ChatMessageResponse> {
-    const response = await axios.get(`${API_HOST}/api/v1/chat/${chatId}/message/`);
+    const response = await api.get(`/api/v1/chat/${chatId}/message/`);
     return response.data;
 }
 
@@ -53,19 +54,19 @@ export async function getChatMessages(chatId: string): Promise<ChatMessageRespon
  * Send a message to a specific chat
  */
 export async function sendMessage(chatId: string, imageUrl: string, imageId: string): Promise<void> {
-    await axios.post(`${API_HOST}/api/v1/chat/${chatId}/message/`, { imageUrl,imageId });
+    await api.post(`/api/v1/chat/${chatId}/message/`, { imageUrl,imageId });
 }
 
 /**
  * Send a message to a specific chat
  */
 export async function sendMessageWithImage(chatId: string, message: string, imageUrl: string): Promise<void> {
-    await axios.post(`${API_HOST}/api/v1/chat/${chatId}/message/`, { message, imageUrl });
+    await api.post(`/api/v1/chat/${chatId}/message/`, { message, imageUrl });
 }
 
 /**
  * Delete a message to a specific chat
  */
 export async function deleteMessage(id:string): Promise<void> {
-    await axios.delete(`${API_HOST}/api/v1/chat/message/${id}`);
+    await api.delete(`/api/v1/chat/message/${id}`);
 }
