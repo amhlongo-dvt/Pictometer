@@ -21,7 +21,7 @@ const client = new S3Client({
   accessKeyId: "minioadmin",
   secretAccessKey: "minioadmin",
   bucket: "images",
-  endpoint: "https://tolerant-pony-optionally.ngrok-free.app",
+  endpoint: "http://127.0.0.1:9000",
 
 });
 

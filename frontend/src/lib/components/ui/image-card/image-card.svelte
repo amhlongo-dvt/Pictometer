@@ -1,6 +1,8 @@
 <script lang="ts">
 	import type { HTMLAttributes } from "svelte/elements";
 	import { cn } from "$lib/utils.js";
+	import {Loader} from "$lib/components/ui/loader/index.js";
+	 import {isLoading} from "../../../../stores/loading"
 
 	interface $$Props extends HTMLAttributes<HTMLElement> {
 		imageUrl: string;
@@ -13,7 +15,6 @@
 		previewFilter?: string;
 		aspectClass?: string;
 		}
-
 	export let imageUrl: string;
 	export let caption: string;
 	export let isCaptionVisible: boolean = true;
@@ -25,9 +26,6 @@
 
 	
 
-	console.log(previewFilter);
-	
-	
 	let className: $$Props["class"] = undefined;
 	export { className as class };
 </script>
@@ -44,13 +42,16 @@
 		<div class="flex-shrink-0">
 		<slot name="top" />
 	</div>
-	<img 
- 
-		class="w-full flex-1  {isAspect ? aspectClass : "min-h-0"} {rounded ? "rounded-base" : ""} object-fill" 
-		style={ previewFilter}
-		src={imageUrl} 
-		alt={caption} 
-	/>
+	{#if !$isLoading}	
+		<img 
+	
+			class="w-full flex-1  {isAspect ? aspectClass : "min-h-0"} {rounded ? "rounded-base" : ""} object-fill" 
+			style={ previewFilter}
+			src={imageUrl} 
+			alt={caption} 
+		/>
+	{/if}
+	<Loader class="w-full flex-1  {isAspect ? aspectClass : "min-h-0"} {rounded ? "rounded-base" : ""} object-fill" />
 	{#if isCaptionVisible}
 	<figcaption class="border-t-2 text-sm border-border p-4 flex-shrink-0 line-clamp-1 ">
 		{caption}

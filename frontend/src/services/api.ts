@@ -4,7 +4,7 @@ import { loadingStore } from "../stores/loading";
 
 const api = axios.create({
     baseURL: `${API_HOST}`,
-    timeout: 10000
+    timeout: 100000
 })
 
 api.interceptors.request.use(

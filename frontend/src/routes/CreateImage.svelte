@@ -9,6 +9,7 @@
     import { Button } from "$lib/components/ui/button/index.js";
     import { Input } from "$lib/components/ui/input/index.js";
     import { Label } from "$lib/components/ui/label/index.js";
+    import {Loader} from "$lib/components/ui/loader/index.js";
     import Textarea from "$lib/components/ui/textarea/textarea.svelte";
     import {getChatMessages, sendMessage} from "../services/chatService"
     import { createImage, generateImage } from "../services/imageService";
@@ -81,7 +82,7 @@
             imageUrl={imageUrl}
             caption={fileName? `${fileName}` : ""}
           />
-    
+
          
           <div class="bg-main border-border  p-4 rounded-base border-2 shadow-shadow flex flex-col justify-between h-full">
             <Tabs.Root value="upload" class="">
