@@ -20,7 +20,13 @@ const chatSchema = z.object({
 
 const messageSchema = z.object({
     imageUrl: z.string(),
-    imageId: z.string()
+    imageId: z.string(),
+
+})
+const updateMessageSchema = z.object({
+    imageUrl: z.string(),
+    imageId: z.string(),
+    chatId: z.string(),
 })
 
 export const CHAT_PREFIX = "/chat/";
@@ -83,6 +89,26 @@ export function createChatApp(
         const data = await messageResource.delete(id);
         c.get("cache").clearPath(c.req.path);
         return c.json({data});
+    });
+    chatApp.get(CHAT_MESSAGE_ROUTE_ID, zValidator("param", idSchema), async (c) => {
+        const {id} = c.req.valid("param")
+        const data =  await messageResource.get(id);
+        if(data){
+            c.get("cache").cache(data);
+            return c.json({data});
+        }
+    });
+    
+    chatApp.put(CHAT_MESSAGE_ROUTE_ID, zValidator("param", idSchema),  zValidator("json", updateMessageSchema), async (c) => {
+        const {id} = c.req.valid("param")
+        const {imageUrl, imageId, chatId} = c.req.valid("json")
+        const userMessage: DBCreateMessage = {imageUrl, chatId, imageId}
+        const data = await messageResource.update(id,userMessage);
+        console.log(data);
+        
+        c.get("cache").clearPath(c.req.path);
+        return c.json({data});
+
     });
 
     return chatApp;

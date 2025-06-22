@@ -1,8 +1,8 @@
-import axios from "axios";
+import axios, { Axios } from "axios";
 import { API_HOST } from "../constants";
 import { loadingStore } from "../stores/loading";
 
-const api = axios.create({
+const api:Axios = axios.create({
     baseURL: `${API_HOST}`,
     timeout: 100000
 })

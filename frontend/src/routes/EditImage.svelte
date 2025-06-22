@@ -1,6 +1,6 @@
 <script lang="ts">
     import {onMount} from "svelte"
-    import {navigate} from "svelte-routing"
+    import {navigate, useLocation} from "svelte-routing"
     import {authToken} from "../stores/auth"
     import Header from "../components/Header.svelte";
     import ImageCard from "$lib/components/ui/image-card/image-card.svelte";
@@ -12,19 +12,32 @@
     import Textarea from "$lib/components/ui/textarea/textarea.svelte";
     import { Undo2, Redo2, X, RotateCw, RotateCcw, FlipHorizontal, FlipVertical, Save } from "lucide-svelte";
     import { getImage, editImage, type ImageTransformations, generateImage } from "../services/imageService";
-  import { getChatMessages, sendMessage, sendMessageWithImage } from "../services/chatService";
+  import { getChatMessages, getMessage, sendMessage, sendMessageWithImage, updateMessage } from "../services/chatService";
         
     onMount(async () => {
         if (!$authToken){
             navigate("/register")
         }
-        image = await getImage(imageId);
+        
+        if(isEditing){
+          image = await getMessage(messageId)
+          console.log(image);
+          
+        }else{
+          image = await getImage(imageId);
+        }
+
         imageUrl = image.imageUrl;
-        console.log(image)
+        isloading = false
     });
     export let imageId:string;  
     export let chatId:string
-
+    const location = useLocation();
+    const searchParams = new URLSearchParams($location.search || '');
+    const isEditing:boolean = searchParams.get('isEditing') === 'true';
+    let messageId:string = searchParams.get('messageId')||""
+  
+    let isloading = true
     let image;
     let imageUrl:string = "";
     let message: string = "";
@@ -70,6 +83,8 @@
         history.push(transformations);
         const response = await editImage(imageId, transformations);
         imageUrl = response.imageUrl;
+        console.log(imageUrl);
+        
     }
 
 
@@ -84,7 +99,9 @@
     const updateImageDebounced = debounce(updateImage);
 
     $:if (brightness || contrast || saturation || rotation || flipHorizontal || flipVertical || resize.width || resize.height) {
-            updateImageDebounced();
+            if(!isloading){
+              updateImageDebounced();
+            }
         };
 
     function undo() {
@@ -144,7 +161,11 @@
   }
 
   async function saveImage() {
-    await sendMessage(chatId, imageUrl, imageId)
+    if(isEditing && messageId){
+      await updateMessage(messageId, chatId, imageUrl, imageId)
+    }else{
+      await sendMessage(chatId, imageUrl, imageId)
+    }
     navigate(`/${chatId}`)
   }
 </script>

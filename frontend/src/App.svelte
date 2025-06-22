@@ -1,4 +1,4 @@
-<script>
+<script lang="ts">
   import "./app.css";
   import {Route, Router} from 'svelte-routing';
   import Register from './routes/Register.svelte';

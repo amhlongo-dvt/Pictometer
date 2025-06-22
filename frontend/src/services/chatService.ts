@@ -70,3 +70,14 @@ export async function sendMessageWithImage(chatId: string, message: string, imag
 export async function deleteMessage(id:string): Promise<void> {
     await api.delete(`/api/v1/chat/message/${id}`);
 }
+/**
+ * Delete a message to a specific chat
+ */
+export async function updateMessage(id:string,chatId: string, imageUrl: string, imageId: string): Promise<void> {
+    await api.put(`/api/v1/chat/message/${id}`, { imageUrl,imageId, chatId});
+}
+
+export async function getMessage(id:string): Promise<Message> {
+    const response = await api.get(`/api/v1/chat/message/${id}`);
+    return response.data.data;
+}
