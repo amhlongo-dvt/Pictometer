@@ -1,4 +1,5 @@
-<script>
+<script lang="ts">
+    import cat_dream from "/cat_dream.svg"
 </script>
 
 <div class="flex-1 flex flex-col items-center justify-center text-center p-6">
@@ -7,10 +8,14 @@
   <div class="flex-1 flex flex-col justify-center items-center px-8 lg:px-16">
     <!-- Welcome Badge -->
     <div class="mb-8">
-      <span class=" uppercase text-white px-6 py-3 text-3xl lg:text-4xl xl:text-5xl font-black tracking-tight inline-block">
+      <span class=" uppercase text-white px-6 py-3 text-4xl  font-black tracking-tight inline-block">
         Welcome to Pictometer
       </span>
     </div>
+
+    
+    <!-- Animated Character -->
+    <img src={cat_dream} alt="Animated Cat Dream" class="w-48 " />
 
     <!-- Main Title with Impact Style -->
     <div class="text-center mb-8 max-w-2xl">
@@ -35,8 +40,6 @@
         </span>
       </div>
     </div>
-
-    <!-- Animated Character -->
 
 
   </div>
