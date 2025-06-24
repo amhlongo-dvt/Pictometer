@@ -5,6 +5,7 @@
     import DarkMode from "../lib/components/ui/dark-mode/toggle.svelte"
     import * as Avatar from "$lib/components/ui/avatar";
     import * as DropdownMenu from "$lib/components/ui/dropdown-menu/index.js";
+    import logo from "/logo.svg"
     const name = authToken.getPayload()?.name || "User"
     export let chatId
     function logout() {
@@ -18,16 +19,16 @@
     <div class="mx-auto h-[88px] flex w-[1340px] dark:text-darkText text-text max-w-full items-center justify-between m500:h-16 px-5">
         <div class="flex items-center gap-10">
             <a 
-                class="text-[30px] h-11 w-11 rounded-base flex bg-main text-text border-2 border-black m500:w-9 m500:h-9 m500:text-[22px] items-center justify-center font-heading" 
+                class="text-[30px] h-11 w-11 rounded-base flex m500:w-9 m500:h-9 m500:text-[22px] items-center justify-center font-heading" 
                 tabindex="0"
                 role="button"
                 on:click={() => {navigate(`/${chatId}`)}}
                 on:keydown={(e) => (e.key === 'Enter' || e.key === ' ')}
                 href={undefined}
             >
-                P
+                <img src={logo} alt="Logo" /> <span class="ml-2">Pictometer</span>
             </a>        
-        </div>
+        </div> 
 
         <div class="flex items-center gap-5 m1000:gap-5">
             <DropdownMenu.Root>
