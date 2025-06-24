@@ -8,19 +8,21 @@
   import EditImage from "./routes/EditImage.svelte";
   import { ModeWatcher } from "mode-watcher";
   import {Toaster} from "$lib/components/ui/sonner";
-  import {errorStore} from "./stores/error"
+  import {errorStore, getErrorClass, getErrorMessage} from "./stores/error"
   import {toast} from "svelte-sonner"
 
   errorStore.subscribe((error) => {
     if (error) {
-      toast.error(error.status.toString() || "Error", {
-        description: error.message,
+      toast.error(getErrorClass(error), {
+        description: getErrorMessage(error.message),
         onDismiss: () => errorStore.reset(),
         onAutoClose: () => errorStore.reset(),
         duration: 5000
       } );
     }
   })
+
+  
 </script>
 
 <ModeWatcher />
