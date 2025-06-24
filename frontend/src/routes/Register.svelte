@@ -12,6 +12,9 @@
     import CardDescription from "$lib/components/ui/card/card-description.svelte";
     import CardTitle from "$lib/components/ui/card/card-title.svelte";
     import WelcomePanel from "$lib/components/auth/WelcomePanel.svelte";
+    import { toast } from "svelte-sonner";
+    import { isLoading } from "../stores/loading";
+    import { Loader2 } from "lucide-svelte";
 
     let name = "";
     let email = "";
@@ -38,6 +41,7 @@
                 password,
                 name
             });
+            toast.success("User registered successfully");
             navigate("/login")
         } catch (error) {
             const defaultError = "An unexpected error occurred"
@@ -67,12 +71,7 @@
             <form on:submit|preventDefault={handleRegister} class="p-6">
                 <CardTitle>Sign Up to your account</CardTitle>
                 <CardDescription class="text-gray-600 mb-6">Enter your details below to sign up to your account</CardDescription>
-                
-                {#if errorMessage}
-                    <div class="p-3 mb-4 bg-red-100 text-red-700 rounded-md">
-                        {errorMessage}
-                    </div>
-                {/if}
+
                 
                 <div class="space-y-4">
                     <div class="space-y-2">
@@ -114,7 +113,12 @@
                     class="w-full mt-6 "
                     disabled={!formValid}
                 >
-                    Sign Up
+                    {#if $isLoading}
+                        <Loader2 class="mr-2 h-4 w-4 animate-spin" />
+                    {/if}
+                    {#if !$isLoading}
+                        Sign Up
+                    {/if}
                 </Button>
                 
                 <CardDescription class="mt-4 text-center text-sm">

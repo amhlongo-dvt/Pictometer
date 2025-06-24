@@ -12,6 +12,8 @@
     import CardDescription from "$lib/components/ui/card/card-description.svelte";
     import CardTitle from "$lib/components/ui/card/card-title.svelte";
     import WelcomePanel from "$lib/components/auth/WelcomePanel.svelte";
+    import { Loader2 } from "lucide-svelte";
+    import { isLoading } from "../stores/loading";
 
     let email = "";
     let password = "";
@@ -66,11 +68,6 @@
                 <CardTitle>Login to your account</CardTitle>
                 <CardDescription class="text-gray-600 mb-6">Enter your details below to login to your account</CardDescription>
                 
-                {#if errorMessage}
-                    <div class="p-3 mb-4 bg-red-100 text-red-700 rounded-md">
-                        {errorMessage}
-                    </div>
-                {/if}
                 
                 <div class="space-y-4">
                     <div class="space-y-2">
@@ -101,7 +98,12 @@
                     class="w-full mt-6  "
                     disabled={!formValid}
                 >
-                    Login
+                    {#if $isLoading}
+                        <Loader2 class="mr-2 h-4 w-4 animate-spin" />
+                    {/if}
+                    {#if !$isLoading}
+                        Login
+                    {/if}
                 </Button>
                 
                 <CardDescription class="mt-4 text-center text-sm">
