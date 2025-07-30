@@ -1,14 +1,12 @@
-@import url('https://fonts.googleapis.com/css2?family=Inter:wght@100;200;300;400;500;600;700;800;900&display=swap');
-
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
   
 :root {
-  --main: #facc00;
+  --main: #a388ee;
   --overlay: rgba(0, 0, 0, 0.8); /* background color overlay for alert dialogs, modals, etc. */
 
-  --bg: #FEF2E8;
+  --bg: #e3dff2;
   --bw: #fff; /* white and secondary black e.g. utility class variant would be: bg-[#fff] dark:bg-[#212121] */
   --blank: #000; /* blank black and white */
   --border: #000;
@@ -29,7 +27,7 @@
 }
 
 .dark {
-  --bg: #374151;
+  --bg: #272733;
   --bw: #212121;
   --blank: #fff;
   --border: #000;
