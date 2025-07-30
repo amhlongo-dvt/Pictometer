@@ -3,6 +3,8 @@
 	import { cn } from "$lib/utils.js";
 	import {Loader} from "$lib/components/ui/loader/index.js";
 	 import {isLoading} from "../../../../stores/loading"
+    import { DotLottieSvelte } from "@lottiefiles/dotlottie-svelte";
+    import chooseAnimation from "../../../../assets/choose.lottie?url";
 
 	interface $$Props extends HTMLAttributes<HTMLElement> {
 		imageUrl: string;
@@ -42,7 +44,7 @@
 		<div class="flex-shrink-0">
 		<slot name="top" />
 	</div>
-	{#if !$isLoading}	
+	{#if !$isLoading && imageUrl}	
 		<img 
 	
 			class="w-full flex-1  {isAspect ? aspectClass : "min-h-0"} {rounded ? "rounded-base" : ""} object-fill" 
@@ -56,5 +58,17 @@
 		<figcaption class="border-t-2 text-sm border-border p-4 flex-shrink-0 line-clamp-1 ">
 			{caption}
 		</figcaption>
+	{/if}
+
+	{#if !imageUrl && !$isLoading}
+
+
+		<DotLottieSvelte
+			speed={0.5}
+			src={chooseAnimation}
+			loop
+			autoplay
+	  />
+		
 	{/if}
 </figure>
