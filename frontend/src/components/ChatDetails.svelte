@@ -76,7 +76,7 @@
     <div class="grid grid-cols-2 md:grid-cols-4 gap-4 col-span-3  p-4"> 
         {#each images as image}
             <button class="aspect-w-1 aspect-h-1 transition-all" on:click={()=>{openSheet(image.imageId, image.id, image.imageUrl)}}>
-                <ImageCard class="w-full h-auto object-cover rounded text-left hover:translate-x-boxShadowX hover:translate-y-boxShadowY hover:shadow-none" imageUrl={image.imageUrl} caption={image.imageUrl} isAspect={true} />
+                <ImageCard class="w-full h-auto object-cover rounded text-left hover:translate-x-boxShadowX hover:translate-y-boxShadowY hover:shadow-none" imageUrl={image.imageUrl} caption={`Image 0${image.imageId}`} isAspect={true} />
             </button>
         {/each}
     </div>

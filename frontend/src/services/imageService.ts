@@ -13,6 +13,7 @@ export interface ImageResponse {
     imageId: string;
     imageUrl: string;
     metadata: Image;
+    transformations: ImageTransformations;
     createdAt: number;
     success: boolean;
 }
@@ -37,7 +38,7 @@ export interface ImageTransformations {
         x: number;
         y: number;
     };
-    rotate?: number;
+    rotation?: number;
     format?: string;
     filters?: {
         grayscale?: boolean;
