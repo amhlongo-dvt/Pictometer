@@ -21,7 +21,7 @@ const client = new S3Client({
   accessKeyId: "minioadmin",
   secretAccessKey: "minioadmin",
   bucket: "images",
-  endpoint: "http://127.0.0.1:9000",
+  endpoint: "https://tolerant-pony-optionally.ngrok-free.app",
 
 });
 
@@ -307,8 +307,8 @@ export function createImageApp(
                     expiresIn: 7 * 24 * 60 * 60, // 7 days
                     acl: "public-read"
                 }),
-                newImageId: "",
-                transformations: Object.keys(transformations).length
+                imageId,
+                transformations
             });
             
         } catch (error) {
