@@ -14,12 +14,12 @@
     }
 </script>
 
-<nav class=" left-0 top-0 z-20 mx-auto flex flex-col w-full items-center border-b-4 border-border dark:border-darkNavBorder bg-white dark:bg-secondaryBlack ">
+<nav class=" left-0 top-0 z-20 flex flex-col w-full items-center border-b-4 border-border dark:border-darkNavBorder bg-white dark:bg-secondaryBlack ">
    
-    <div class="mx-auto h-[88px] flex w-[1340px] dark:text-darkText text-text max-w-full items-center justify-between m500:h-16 px-5">
+    <div class=" h-[88px] flex w-full dark:text-darkText text-text   items-center justify-between m500:h-16 px-4">
         <div class="flex items-center gap-10">
             <a 
-                class="text-[30px] h-11 w-11 rounded-base flex m500:w-9 m500:h-9 m500:text-[22px] items-center justify-center font-heading" 
+                class="text-[30px] h-11 w-11 rounded-base flex m500:w-9 m500:h-9 m500:text-[22px]  font-heading" 
                 tabindex="0"
                 role="button"
                 on:click={() => {navigate(`/${chatId}`)}}
@@ -55,7 +55,6 @@
         <div class="flex items-center justify-end gap-5 m800:w-[unset] m400:gap-3">
             <DarkMode/>
         </div>
-    </div>
     </div>
 
 </nav>

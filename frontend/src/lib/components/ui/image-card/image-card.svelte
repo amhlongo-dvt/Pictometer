@@ -35,6 +35,7 @@
 <figure
 	class={cn(
 		"w-full h-full  overflow-hidden rounded-base border-2 border-border bg-main font-base  flex flex-col",
+		!imageUrl && !$isLoading ? "items-center justify-center" : "",
 		shadowVisible ? "shadow-shadow" : "",
 		className
 	)}
@@ -62,9 +63,10 @@
 
 	{#if !imageUrl && !$isLoading}
 
-	<figcaption class="border-t-2  border-border p-4 flex-shrink-0 line-clamp-1 text-center items-center text-text text-md font-bold">
-		Please select an image to upload
-	</figcaption>
+		<figcaption class="border-border p-4 flex-shrink-0 line-clamp-1 text-center items-center text-text text-md font-bold">
+			Please Upload or Generate an Image
+		</figcaption>
+		<div class="w-2/3 h-2/3 flex items-center justify-center">
 		<DotLottieSvelte
 			speed={0.5}
 			src={chooseAnimation}
@@ -73,5 +75,6 @@
 			mode="bounce"
 	  />
 		
+		</div>
 	{/if}
 </figure>
