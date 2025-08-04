@@ -53,7 +53,7 @@
         imageUrl = url
         
         imageSize = `${(metaRes.metadata.size/1024).toFixed(2)} Kb`
-        imageId = metaRes.imageId
+        imageId = imageIdArg
     }
     async function deleteImage(id:string){
        await deleteMessage(id)

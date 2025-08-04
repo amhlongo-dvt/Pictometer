@@ -64,6 +64,7 @@
     function clearImage(){
         imageUrl = ""
         imageId = ""
+        fileName = ""
         reader.abort();
         file = null;
     }
@@ -80,7 +81,7 @@
           <ImageCard
             class="col-span-3 w-full"
             imageUrl={imageUrl}
-            caption={fileName? `${fileName}` : ""}
+            caption={fileName}
           />
 
          

@@ -54,7 +54,7 @@
 		/>
 	{/if}
 	<Loader class="w-full flex-1  {isAspect ? aspectClass : "min-h-0"} {rounded ? "rounded-base" : ""} object-fill" />
-	{#if isCaptionVisible}
+	{#if isCaptionVisible && caption}
 		<figcaption class="border-t-2 text-sm border-border p-4 flex-shrink-0 line-clamp-1 ">
 			{caption}
 		</figcaption>
@@ -62,12 +62,15 @@
 
 	{#if !imageUrl && !$isLoading}
 
-
+	<figcaption class="border-t-2  border-border p-4 flex-shrink-0 line-clamp-1 text-center items-center text-text text-md font-bold">
+		Please select an image to upload
+	</figcaption>
 		<DotLottieSvelte
 			speed={0.5}
 			src={chooseAnimation}
 			loop
 			autoplay
+			mode="bounce"
 	  />
 		
 	{/if}

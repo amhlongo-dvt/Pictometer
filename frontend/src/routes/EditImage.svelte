@@ -29,6 +29,10 @@
 
         imageUrl = image.imageUrl;
         isloading = false
+
+        setTimeout(() => {
+            hasInitialized = true;
+        }, 10000);
     });
     export let imageId:string;  
     export let chatId:string
@@ -38,6 +42,7 @@
     let messageId:string = searchParams.get('messageId')||""
   
     let isloading = true
+    let hasInitialized = false;
     let image;
     let imageUrl:string = "";
     let message: string = "";
@@ -83,6 +88,7 @@
         history.push(transformations);
         const response = await editImage(imageId, transformations);
         imageUrl = response.imageUrl;
+        imageId = response.imageId;
         console.log(imageUrl);
         
     }
@@ -98,7 +104,7 @@
 
     const updateImageDebounced = debounce(updateImage);
 
-    $:if (brightness || contrast || saturation || rotation || flipHorizontal || flipVertical || resize.width || resize.height) {
+    $:if (hasInitialized && (brightness || contrast || saturation || rotation || flipHorizontal || flipVertical || resize.width || resize.height)) {
             if(!isloading){
               updateImageDebounced();
             }
