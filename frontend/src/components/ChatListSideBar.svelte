@@ -52,7 +52,7 @@
 </script>
 
 
-<aside class="scrollbar bg-white dark:bg-secondaryBlack h-full col-span-1 overflow-y-auto overflow-x-hidden border-r-4 border-border dark:border-darkNavBorder">
+<aside class="scrollbar bg-white dark:bg-secondaryBlack h-full col-span-1 flex flex-col overflow-x-hidden border-r-4 border-border dark:border-darkNavBorder">
     {#if errorMessage}
         <div class="error">{errorMessage}</div>
     {/if}
@@ -72,18 +72,18 @@
         </div>
     {/if}
 
-    <Button variant="noShadow" class="w-full rounded-none border-b-4  border-l-0  border-r-0" on:click={() => (isCreatingNewChat = true)}>New Collection</Button>
-    <ul>
+    <ul class="flex flex-col flex-1 overflow-y-auto scrollbar">
         {#each chats as chat (chat.id)}
-            <button 
-                class="block border-b-4 w-full text-left border-border dark:border-darkNavBorder p-4 pl-7 text-lg font-base text-text/90 dark:text-darkText/90 hover:bg-main dark:hover:text-text" 
-                class:selected={chat.id === chatId}
-                on:click={() => selectChat(chat.id)}
-            >
-                {chat.name}
-            </button>
-        {/each}
+        <button 
+        class="block border-b-4 w-full text-left border-border dark:border-darkNavBorder p-4 pl-7 text-lg font-base text-text/90 dark:text-darkText/90 hover:bg-main dark:hover:text-text" 
+        class:selected={chat.id === chatId}
+        on:click={() => selectChat(chat.id)}
+        >
+        {chat.name}
+    </button>
+    {/each}
     </ul>    
+    <Button variant="noShadow" class="w-full rounded-none border-b-4 border-l-0 border-r-0" on:click={() => (isCreatingNewChat = true)}>New Collection</Button>
     
 </aside>
 

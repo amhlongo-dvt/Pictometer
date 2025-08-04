@@ -10,6 +10,10 @@
     import { navigate } from "svelte-routing";
     import { getImage } from "../services/imageService";
     import { API_HOST } from "../constants";
+    import { DotLottieSvelte } from "@lottiefiles/dotlottie-svelte";
+    import dataAnimation from "../assets/choose.lottie?url";
+    import { PlusIcon } from "lucide-svelte";
+
 
     export let chatId: string;
 
@@ -72,7 +76,7 @@
     }
 </script>
 <div class="col-span-3 overflow-y-auto scrollbar">
-    <Button variant="noShadow" class="w-full rounded-none border-b-4  border-l-0  border-r-0" on:click={()=>{navigate(`/create/${chatId}`)}}>New Image</Button>
+    <Button variant="default" class="absolute bottom-8 right-8" size="icon" on:click={()=>{navigate(`/create/${chatId}`)}}><PlusIcon class="w-full h-full" /></Button>
     <div class="grid grid-cols-2 md:grid-cols-4 gap-4 col-span-3  p-4"> 
         <!-- loop through images repeat 6 times -->
         {#each images as image, index}
@@ -81,6 +85,20 @@
             </button>
         {/each}
     </div>
+    {#if images.length === 0}
+            <figure class="col-span-3 h-2/3 ">
+            <figcaption class=" border-border p-4 flex-shrink-0 line-clamp-1 text-center items-center text-text text-md font-bold">
+                No images available. Create a new one!
+            </figcaption>
+                <DotLottieSvelte
+                    speed={.5}
+                    src={dataAnimation}
+                    loop
+                    autoplay
+                    mode="reverse-bounce"
+              />
+            </figure>
+            {/if}
     <Sheet.Root bind:open={isOpen}>
         
         <Sheet.Content class="space-y-2 overflow-y-auto scrollbar">

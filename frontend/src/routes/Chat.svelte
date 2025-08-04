@@ -18,7 +18,7 @@
     });
 </script>
 
-<div class="h-[calc(100vh-95px)]">
+<div class="h-[calc(100vh-93px)]">
     <Header chatId={chatId}></Header>
     <div class="grid grid-cols-4 h-full ">
        
