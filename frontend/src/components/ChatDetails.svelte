@@ -76,7 +76,7 @@
     }
 </script>
 <div class="col-span-3 overflow-y-auto scrollbar">
-    <Button variant="default" class="absolute bottom-8 right-8" size="icon" on:click={()=>{navigate(`/create/${chatId}`)}}><PlusIcon class="w-full h-full" /></Button>
+    <Button variant="default" class="absolute bottom-8 right-8 bg-warning hover:bg-warning/80" size="icon" on:click={()=>{navigate(`/create/${chatId}`)}}><PlusIcon class="w-full h-full" /></Button>
     <div class="grid grid-cols-2 md:grid-cols-4 gap-4 col-span-3  p-4"> 
         <!-- loop through images repeat 6 times -->
         {#each images as image, index}
@@ -121,11 +121,11 @@
                 </Card.Root>
                 
                     <div class="space-y-2 pt-4 flex flex-col">
-                        <Button class="w-full" on:click={() => {navigate(`/edit/${chatId}/${imageId}?isEditing=true&messageId=${messageId}`)}}>Edit</Button>
+                        <Button class="w-full bg-info hover:bg-info/80" on:click={() => {navigate(`/edit/${chatId}/${imageId}?isEditing=true&messageId=${messageId}`)}}>Edit</Button>
                         <a href={`${API_HOST}/api/v1/image/download/${imageId}`}>
-                            <Button class="w-full">Download</Button>
+                            <Button class="w-full bg-success hover:bg-success/80">Download</Button>
                         </a>
-                        <Button class="w-full" variant="neutral" on:click={() => {deleteImage(messageId)}}>Delete</Button>
+                        <Button class="w-full bg-error hover:bg-error/80" variant="neutral" on:click={() => {deleteImage(messageId)}}>Delete</Button>
                         
                     </div>
             

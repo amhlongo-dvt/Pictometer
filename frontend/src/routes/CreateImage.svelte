@@ -106,7 +106,7 @@
                     </div>
                   </Card.Content>
                   <Card.Footer>
-                    <Button variant="noShadow" class="w-full" on:click={() => {clearImage()}}>Clear</Button>
+                    <Button variant="noShadow" class="w-full bg-error" on:click={() => {clearImage()}}>Clear</Button>
                   </Card.Footer>
                 </Card.Root>
               </Tabs.Content>
@@ -129,12 +129,12 @@
                     </div>
                   </Card.Content> 
                   <Card.Footer>
-                    <Button variant="noShadow"  on:click={() => {generateImageFromPrompt(message)}}>Generate</Button>
+                    <Button variant="noShadow" class="w-full bg-success"  on:click={() => {generateImageFromPrompt(message)}}>Generate</Button>
                   </Card.Footer>
                 </Card.Root>
               </Tabs.Content>
             </Tabs.Root>
-            <Button class="w-full" variant="noShadow" on:click={() => createImageFile()}>Create</Button>
+            <Button class="w-full bg-info hover:bg-selected/80 disabled:bg-disabled disabled:text-text/50" variant="noShadow" disabled={!imageUrl} on:click={() => createImageFile()}>Create</Button>
           </div>
 
 

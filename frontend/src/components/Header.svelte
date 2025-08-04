@@ -16,7 +16,7 @@
 
 <nav class=" left-0 top-0 z-20 flex flex-col w-full items-center border-b-4 border-border dark:border-darkNavBorder bg-white dark:bg-secondaryBlack ">
    
-    <div class=" h-[88px] flex w-full dark:text-darkText text-text   items-center justify-between m500:h-16 px-4">
+    <div class=" h-[88px] flex w-full dark:text-darkText text-text   items-center justify-between m500:h-16 px-8">
         <div class="flex items-center gap-10">
             <a 
                 class="text-[30px] h-11 w-11 rounded-base flex m500:w-9 m500:h-9 m500:text-[22px]  font-heading" 

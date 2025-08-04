@@ -196,17 +196,17 @@
             >
             <div slot="top" class="py-4 w-full flex flex-row justify-between gap-2">
               <div class="pr-0 flex flex-row justify-end gap-1">
-                <Button variant="noShadow" on:click={undo}>
+                <Button variant="noShadow" class="bg-info hover:bg-info/80" on:click={undo}>
                   <Undo2 strokeWidth="2.5" /> Undo
                 </Button>
-                <Button variant="noShadow" on:click={redo}>
+                <Button variant="noShadow" class="bg-info hover:bg-info/80" on:click={redo}>
                   <Redo2 strokeWidth="2.5"/> Redo
                 </Button>
-                <Button variant="noShadow" on:click={clearImage}>
+                <Button variant="noShadow" class="bg-error hover:bg-error/80" on:click={clearImage}>
                   <X strokeWidth="2.5"/> Clear
                 </Button>
               </div>
-              <Button variant="noShadow" on:click={saveImage}><Save stroke-width="2.5"/>Save</Button>
+              <Button variant="noShadow" class="bg-success hover:bg-success/80" on:click={saveImage}><Save stroke-width="2.5"/>Save</Button>
             </div>
           </ImageCard>
           <div class="bg-main border-border  p-4 rounded-base border-2 shadow-shadow flex flex-col gap-2 h-full overflow-y-auto scrollbar">
@@ -221,7 +221,7 @@
                     </div>
                   </Card.Content> 
                   <Card.Footer>
-                    <Button on:click={() => {editImageFromPrompt(message)}}>Generate</Button>
+                    <Button class="bg-warning hover:bg-warning/80" on:click={() => {editImageFromPrompt(message)}}>Generate</Button>
                   </Card.Footer>
                 </Card.Root>
                 

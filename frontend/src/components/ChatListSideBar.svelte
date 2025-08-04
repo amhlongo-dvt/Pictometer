@@ -83,7 +83,7 @@
     </button>
     {/each}
     </ul>    
-    <Button variant="noShadow" class="w-full rounded-none border-b-4 border-l-0 border-r-0" on:click={() => (isCreatingNewChat = true)}>New Collection</Button>
+    <Button variant="noShadow" class="w-full rounded-none border-b-4 border-l-0 border-r-0 bg-success hover:bg-success/80" on:click={() => (isCreatingNewChat = true)}>New Collection</Button>
     
 </aside>
 
