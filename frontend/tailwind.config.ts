@@ -10,20 +10,35 @@ const config: Config = {
 			sans: ["Inter", ...fontFamily.sans],
 		},
 		extend: {
-		  colors: {
-			main: 'var(--main)',
-			overlay: 'var(--overlay)',
-			bg: 'var(--bg)',
-			bw: 'var(--bw)',
-			blank: 'var(--blank)',
-			text: 'var(--text)',
-			mtext: 'var(--mtext)',
-			border: 'var(--border)',
-			ring: 'var(--ring)',
-			ringOffset: 'var(--ring-offset)',
-			
-			secondaryBlack: '#212121', 
-		  },
+          colors: {
+            main: 'var(--main)',
+            overlay: 'var(--overlay)',
+            bg: 'var(--bg)',
+            bw: 'var(--bw)',
+            blank: 'var(--blank)',
+            text: 'var(--text)',
+            mtext: 'var(--mtext)',
+            border: 'var(--border)',
+            ring: 'var(--ring)',
+            ringOffset: 'var(--ring-offset)',
+
+            // State colors
+            success: 'var(--success)',
+            'success-bg': 'var(--success-bg)',
+            error: 'var(--error)',
+            'error-bg': 'var(--error-bg)',
+            warning: 'var(--warning)',
+            'warning-bg': 'var(--warning-bg)',
+            info: 'var(--info)',
+            'info-bg': 'var(--info-bg)',
+            disabled: 'var(--disabled)',
+            focus: 'var(--focus)',
+            hover: 'var(--hover)',
+            active: 'var(--active)',
+            selected: 'var(--selected)',
+
+            secondaryBlack: '#212121', 
+          },
 		  borderRadius: {
 			base: '5px'
 		  },
