@@ -161,7 +161,7 @@
   }
 
   async function editImageFromPrompt(message: string){
-        const response2 = await generateImage(message,imageUrl)
+        const response2 = await generateImage(message, imageId)
         imageId = response2.imageId;
         imageUrl = response2.imageUrl
   }
