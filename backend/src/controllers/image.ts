@@ -18,10 +18,10 @@ import sharp from "sharp";
 import { generateEditMessageResponse, generateMessageResponse } from "../integrations/generate_message";
 
 const client = new S3Client({
-  accessKeyId: "minioadmin",
-  secretAccessKey: "minioadmin",
-  bucket: "images",
-  endpoint: "https://tolerant-pony-optionally.ngrok-free.app",
+  accessKeyId: Bun.env.S3_ACCESS_KEY,
+  secretAccessKey: Bun.env.S3_SECRET_KEY,
+  bucket: Bun.env.S3_BUCKET,
+  endpoint: Bun.env.S3_ENDPOINT,
 
 });
 
@@ -31,6 +31,8 @@ export function createImageApp(
     imageResource: IDatabaseResource<DBImage, DBCreateImage>
 ) {
     const imageApp = new Hono<ContextVariables>();
+    
+
 
     imageApp.post(IMAGE_ROUTE, async (c) => {
         const userId = c.get("userId");

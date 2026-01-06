@@ -29,7 +29,7 @@ import { ChatDBResource, ImageDBResource, MessageDBResource, UserDBResource } fr
 import { PrismaClient } from "@prisma/client";
 
 const corsOptions = {
-    origin: [Bun.env.CORS_ORIGIN as string],
+    origin: "*",
     allowMethods: ["GET", "POST", "PUT", "PATCH", "DELETE"],
     allowHeaders: ["Content-Type", "Authorization"],
     maxAge: 86400

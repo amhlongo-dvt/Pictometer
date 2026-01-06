@@ -1,5 +1,8 @@
-import { createInMemoryApp } from './controllers/main'
+import { createInMemoryApp, createORMApp } from './controllers/main'
 
-const app = createInMemoryApp()
+const app = createORMApp()
 
 export default app
+
+
+
